@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: #fffaf6;
+  --color-foreground: #2c1d16;
+  --color-card: #ffffff;
+  --color-card-muted: #fdf6f0;
+  --color-popover: #ffffff;
+  --color-primary: #e0674f;
+  --color-primary-foreground: #ffffff;
+  --color-primary-dark: #c14e37;
+  --color-secondary: #f6ece5;
+  --color-secondary-foreground: #5b463b;
+  --color-muted: #f5efe9;
+  --color-muted-foreground: #7b6a60;
+  --color-accent: #f9e2d7;
+  --color-accent-foreground: #8a4a35;
+  --color-destructive: #d64545;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #2f9e6f;
+  --color-success-foreground: #ffffff;
+  --color-warning: #d99b28;
+  --color-warning-foreground: #ffffff;
+  --color-border: #eadfd6;
+  --color-input: #e3d6cb;
+  --color-ring: #e0674f;
+  --color-cream: #fdf3ea;
+  --color-cocoa: #6b4a35;
+  --color-blush: #f7d9d0;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 0.9rem;
+  --radius-xl: 1.4rem;
+
+  --shadow-soft: 0 1px 2px rgb(44 29 22 / 0.04), 0 8px 24px -12px rgb(44 29 22 / 0.18);
+  --shadow-lift: 0 2px 6px rgb(44 29 22 / 0.06), 0 18px 40px -20px rgb(44 29 22 / 0.35);
+}
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-blush);
+}
+
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+@utility shadow-lift {
+  box-shadow: var(--shadow-lift);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease both;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-muted);
+  border-radius: var(--radius-md);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+  animation: shimmer 1.4s infinite;
+}

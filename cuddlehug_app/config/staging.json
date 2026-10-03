@@ -1,0 +1,6 @@
+{
+  "ENVIRONMENT": "staging",
+  "API_BASE_URL": "https://api-staging.cuddlehug.com",
+  "WEB_ASSET_BASE": "https://staging.cuddlehug.com",
+  "ENABLE_LOGGING": "true"
+}

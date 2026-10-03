@@ -1,0 +1,6 @@
+{
+  "ENVIRONMENT": "prod",
+  "API_BASE_URL": "https://api.cuddlehug.com",
+  "WEB_ASSET_BASE": "https://cuddlehug.com",
+  "ENABLE_LOGGING": "false"
+}

@@ -1,0 +1,6 @@
+{
+  "ENVIRONMENT": "dev",
+  "API_BASE_URL": "http://10.0.2.2:5000",
+  "WEB_ASSET_BASE": "http://10.0.2.2:3000",
+  "ENABLE_LOGGING": "true"
+}

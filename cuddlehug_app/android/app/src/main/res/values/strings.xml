@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launcher label; dev/staging flavors override this (plan §20.1). -->
+    <string name="app_name">CuddleHug</string>
+</resources>

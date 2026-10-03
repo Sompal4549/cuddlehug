@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48" role="img" aria-label="CuddleHug">
+  <g fill="none" stroke="#e0674f" stroke-width="3" stroke-linecap="round">
+    <path d="M14 30c-4 0-7-3-7-7s3-7 7-7c1 0 2 .2 3 .6C19 11 24 8 30 8c8 0 14 6 14 14 0 1-.1 2-.3 3 3 1 5 4 5 7 0 4-3 7-7 7H16" />
+    <circle cx="24" cy="22" r="2.4" fill="#e0674f" stroke="none" />
+    <circle cx="36" cy="22" r="2.4" fill="#e0674f" stroke="none" />
+    <path d="M27 28c1.6 1.6 4.4 1.6 6 0" />
+  </g>
+  <text x="56" y="32" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="700" fill="#2c1d16">CuddleHug</text>
+</svg>
