@@ -434,7 +434,9 @@ class _CouponCardState extends ConsumerState<_CouponCard> {
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   SizedBox(
-                    width: 84,
+                    // 16px/w600 label + ElevatedButton padding — anything
+                    // narrower squeezes "Apply" onto two lines.
+                    width: 112,
                     child: AppButton(
                       label: 'Apply',
                       loading: couponBusy,

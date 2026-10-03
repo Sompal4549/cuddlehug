@@ -21,7 +21,7 @@ class AppButton extends StatelessWidget {
             height: 22,
             child: CircularProgressIndicator(strokeWidth: 2.5),
           )
-        : Text(label);
+        : Text(label, maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis);
     if (outlined) {
       return OutlinedButton(onPressed: loading ? null : onPressed, child: child);
     }

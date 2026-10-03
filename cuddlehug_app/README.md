@@ -13,7 +13,7 @@ All environment data comes from `--dart-define-from-file=config/{dev,staging,pro
 | | dev | staging | prod |
 |---|---|---|---|
 | API | `http://10.0.2.2:5000` (Android emulator) | `https://api-staging.cuddlehug.com` | `https://api.cuddlehug.com` |
-| Web assets (`/images/*`) | `http://10.0.2.2:3000` | `https://staging.cuddlehug.com` | `https://cuddlehug.com` |
+| Web assets (`/images/*`) | `http://10.0.2.2:3002` | `https://staging.cuddlehug.com` | `https://cuddlehug.com` |
 | Android app id | `com.cuddlehug.app.dev` | `com.cuddlehug.app.staging` | `com.cuddlehug.app` |
 | Android label | CuddleHug Dev | CuddleHug Staging | CuddleHug |
 
@@ -25,7 +25,7 @@ All environment data comes from `--dart-define-from-file=config/{dev,staging,pro
 ```bash
 flutter pub get
 
-# Android (local backend must be running on :5000, web on :3000)
+# Android (local backend must be running on :5000, web on :3002)
 flutter run --flavor dev --dart-define-from-file=config/dev.json
 
 # Release builds
