@@ -88,6 +88,9 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cuddlehug_test?schema=public
       TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cuddlehug_test?schema=public
       NODE_ENV: test
+      # Required by config/env.ts (min 16 chars) — CI has no .env file.
+      JWT_ACCESS_SECRET: ci_test_access_secret_min_16_chars
+      JWT_REFRESH_SECRET: ci_test_refresh_secret_min_16_chars
       RAZORPAY_WEBHOOK_SECRET: test_webhook_secret
     steps:
       - uses: actions/checkout@v4
