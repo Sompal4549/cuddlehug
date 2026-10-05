@@ -29,6 +29,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+/// Auth screens that must never be accepted as a `next=` destination —
+/// bouncing straight back to them after login would loop.
+const _authLoopPaths = <String>{
+  RoutePaths.login,
+  RoutePaths.register,
+  RoutePaths.forgotPassword,
+  RoutePaths.resetPassword,
+  RoutePaths.splash,
+};
+
+/// Validates a `?next=` (or deep-link) target before the router follows it.
+///
+/// Accepts only in-app absolute paths. Rejects scheme-relative URLs
+/// (`//host`), backslashes, encoded slashes (`%2f` would decode into a
+/// `//host` authority), control characters and the auth screens themselves,
+/// so an untrusted link can neither escape the app origin nor create a
+/// redirect loop. Returns `null` when the value must be ignored.
+String? safeRedirectTarget(String? next) {
+  if (next == null || next.isEmpty) return null;
+  if (!next.startsWith('/')) return null;
+  if (next.startsWith('//')) return null;
+  if (next.contains(r'\')) return null;
+  if (next.toLowerCase().contains('%2f')) return null;
+  if (next.contains('\n') || next.contains('\r') || next.contains('\u0000')) {
+    return null;
+  }
+  final uri = Uri.tryParse(next);
+  if (uri == null) return null;
+  if (_authLoopPaths.contains(uri.path)) return null;
+  return next;
+}
+
 /// Builds the app router (fresh instance per call — tests build their own).
 ///
 /// [isAuthenticated] is read at redirect time so the guard reacts to auth
@@ -43,22 +75,23 @@ GoRouter buildAppRouter({
   return GoRouter(
     initialLocation: initialLocation,
     refreshListenable: refreshListenable,
+    // Unknown locations (stale deep links, mistyped pushes) must degrade to
+    // home instead of throwing — an unmatched route is not an app crash.
+    onException: (context, state, router) => router.go(RoutePaths.home),
     redirect: (context, state) {
       final location = state.matchedLocation;
       final needsAuth = _protectedPrefixes.any(
         (prefix) => location == prefix || location.startsWith('$prefix/'),
       );
       if (needsAuth && !authed()) {
+        // Preserve the intended destination so login can restore it.
         final next = Uri.encodeComponent(state.uri.toString());
         return '${RoutePaths.login}?next=$next';
       }
       if (authed() &&
           (location == RoutePaths.login || location == RoutePaths.register)) {
-        final next = state.uri.queryParameters['next'];
-        if (next != null && next.startsWith('/') && !next.startsWith('//')) {
-          return next;
-        }
-        return RoutePaths.home;
+        return safeRedirectTarget(state.uri.queryParameters['next']) ??
+            RoutePaths.home;
       }
       return null;
     },

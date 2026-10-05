@@ -16,27 +16,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 DioClient _client() => DioClient(
-      authSession: AuthSession(),
-      secureStore: SecureStore(),
-      enableLogging: false,
-    );
+  authSession: AuthSession(),
+  secureStore: SecureStore(),
+  enableLogging: false,
+);
 
 class _PreloadedAddresses extends AddressesController {
   @override
   AddressesState build() => const AddressesState(
-        items: [
-          Address(
-            id: 'a1',
-            fullName: 'Asha Patel',
-            phone: '9876543210',
-            line1: '12 Cuddle Lane',
-            city: 'Pune',
-            state: 'Maharashtra',
-            pincode: '411001',
-            isDefault: true,
-          ),
-        ],
-      );
+    items: [
+      Address(
+        id: 'a1',
+        fullName: 'Asha Patel',
+        phone: '9876543210',
+        line1: '12 Cuddle Lane',
+        city: 'Pune',
+        state: 'Maharashtra',
+        pincode: '411001',
+        isDefault: true,
+      ),
+    ],
+  );
 }
 
 class _FailingCheckoutRepository extends CheckoutRepository {
@@ -66,23 +66,23 @@ class _EmptyCartRepository extends CartRepository {
 
   @override
   Future<Cart> getCart() async => Cart.fromJson(const <String, dynamic>{
-        'id': 'cart1',
-        'itemCount': 0,
-        'items': <Map<String, dynamic>>[],
-        'coupon': null,
-        'summary': <String, dynamic>{
-          'subtotal': '0.00',
-          'mrpTotal': '0.00',
-          'productSavings': '0.00',
-          'couponDiscount': '0.00',
-          'discountedSubtotal': '0.00',
-          'shipping': '0.00',
-          'tax': '0.00',
-          'total': '0.00',
-          'freeShippingUnlocked': false,
-          'lines': <Map<String, dynamic>>[],
-        },
-      });
+    'id': 'cart1',
+    'itemCount': 0,
+    'items': <Map<String, dynamic>>[],
+    'coupon': null,
+    'summary': <String, dynamic>{
+      'subtotal': '0.00',
+      'mrpTotal': '0.00',
+      'productSavings': '0.00',
+      'couponDiscount': '0.00',
+      'discountedSubtotal': '0.00',
+      'shipping': '0.00',
+      'tax': '0.00',
+      'total': '0.00',
+      'freeShippingUnlocked': false,
+      'lines': <Map<String, dynamic>>[],
+    },
+  });
 }
 
 Future<void> _pump(WidgetTester tester) async {
@@ -96,8 +96,9 @@ Future<void> _pump(WidgetTester tester) async {
             'shipping.codEnabled': true,
           }),
         ),
-        checkoutRepositoryProvider
-            .overrideWithValue(_FailingCheckoutRepository()),
+        checkoutRepositoryProvider.overrideWithValue(
+          _FailingCheckoutRepository(),
+        ),
         cartRepositoryProvider.overrideWithValue(_EmptyCartRepository()),
       ],
       child: const MaterialApp(home: CheckoutScreen()),
@@ -109,8 +110,9 @@ Future<void> _pump(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('renders sections and enables the pay button with an address',
-      (tester) async {
+  testWidgets('renders sections and enables the pay button with an address', (
+    tester,
+  ) async {
     await _pump(tester);
     expect(find.text('Delivery address'), findsOneWidget);
     expect(find.text('Payment method'), findsOneWidget);
@@ -121,11 +123,16 @@ void main() {
     final payButton = tester.widget<ElevatedButton>(
       find.widgetWithText(ElevatedButton, 'Pay now'),
     );
-    expect(payButton.onPressed, isNotNull, reason: 'default address preselected');
+    expect(
+      payButton.onPressed,
+      isNotNull,
+      reason: 'default address preselected',
+    );
   });
 
-  testWidgets('switching to cash on delivery relabels the action',
-      (tester) async {
+  testWidgets('switching to cash on delivery relabels the action', (
+    tester,
+  ) async {
     await _pump(tester);
     await tester.tap(find.text('Cash on delivery'));
     await tester.pump();
@@ -133,8 +140,9 @@ void main() {
     expect(find.text('Pay now'), findsNothing);
   });
 
-  testWidgets('order-create failure surfaces the backend message',
-      (tester) async {
+  testWidgets('order-create failure surfaces the backend message', (
+    tester,
+  ) async {
     await _pump(tester);
     await tester.tap(find.text('Cash on delivery'));
     await tester.pump();

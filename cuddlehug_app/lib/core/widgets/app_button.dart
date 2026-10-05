@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 /// Primary call-to-action button with a built-in loading state.
 class AppButton extends StatelessWidget {
   const new({
-    required this.label, required this.onPressed, super.key,
+    required this.label,
+    required this.onPressed,
+    super.key,
     this.loading = false,
     this.outlined = false,
   });
@@ -21,9 +23,17 @@ class AppButton extends StatelessWidget {
             height: 22,
             child: CircularProgressIndicator(strokeWidth: 2.5),
           )
-        : Text(label, maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis);
+        : Text(
+            label,
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+          );
     if (outlined) {
-      return OutlinedButton(onPressed: loading ? null : onPressed, child: child);
+      return OutlinedButton(
+        onPressed: loading ? null : onPressed,
+        child: child,
+      );
     }
     return ElevatedButton(onPressed: loading ? null : onPressed, child: child);
   }

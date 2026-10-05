@@ -17,47 +17,30 @@ class CartRepository {
 
   final DioClient _client;
 
-  Future<Cart> getCart() => _cart(
-        ApiEndpoints.cart,
-        method: 'GET',
-      );
+  Future<Cart> getCart() => _cart(ApiEndpoints.cart, method: 'GET');
 
-  Future<Cart> addItem({
-    required String variantId,
-    int quantity = 1,
-  }) =>
-      _cart(
-        ApiEndpoints.cartItems,
-        method: 'POST',
-        body: {'variantId': variantId, 'quantity': quantity},
-      );
+  Future<Cart> addItem({required String variantId, int quantity = 1}) => _cart(
+    ApiEndpoints.cartItems,
+    method: 'POST',
+    body: {'variantId': variantId, 'quantity': quantity},
+  );
 
   /// Quantity `0` deletes the line server-side.
-  Future<Cart> updateItem({
-    required String variantId,
-    required int quantity,
-  }) =>
+  Future<Cart> updateItem({required String variantId, required int quantity}) =>
       _cart(
         ApiEndpoints.cartItems,
         method: 'PATCH',
         body: {'variantId': variantId, 'quantity': quantity},
       );
 
-  Future<Cart> removeItem(String itemId) => _cart(
-        '${ApiEndpoints.cartItems}/$itemId',
-        method: 'DELETE',
-      );
+  Future<Cart> removeItem(String itemId) =>
+      _cart('${ApiEndpoints.cartItems}/$itemId', method: 'DELETE');
 
-  Future<Cart> applyCoupon(String code) => _cart(
-        ApiEndpoints.cartCoupon,
-        method: 'POST',
-        body: {'code': code},
-      );
+  Future<Cart> applyCoupon(String code) =>
+      _cart(ApiEndpoints.cartCoupon, method: 'POST', body: {'code': code});
 
-  Future<Cart> removeCoupon() => _cart(
-        ApiEndpoints.cartCoupon,
-        method: 'DELETE',
-      );
+  Future<Cart> removeCoupon() =>
+      _cart(ApiEndpoints.cartCoupon, method: 'DELETE');
 
   Future<Cart> _cart(
     String path, {
@@ -68,10 +51,10 @@ class CartRepository {
     final result = method == 'GET'
         ? await _client.get<Cart>(path, decode: decode)
         : method == 'POST'
-            ? await _client.post<Cart>(path, decode: decode, body: body)
-            : method == 'PATCH'
-                ? await _client.patch<Cart>(path, decode: decode, body: body)
-                : await _client.delete<Cart>(path, decode: decode);
+        ? await _client.post<Cart>(path, decode: decode, body: body)
+        : method == 'PATCH'
+        ? await _client.patch<Cart>(path, decode: decode, body: body)
+        : await _client.delete<Cart>(path, decode: decode);
     return result.data;
   }
 }

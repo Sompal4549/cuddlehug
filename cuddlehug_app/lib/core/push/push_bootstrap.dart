@@ -28,7 +28,7 @@ final pushBootstrapProvider = Provider<PushBootstrap>((ref) {
 ///   is denied → poll `unread-count` every 60s so the badge still works.
 class PushBootstrap {
   new(this.ref, {this._service, String? platform})
-      : _platform = platform ?? _defaultPlatform();
+    : _platform = platform ?? _defaultPlatform();
 
   final Ref ref;
   final PushService? _service;
@@ -43,8 +43,7 @@ class PushBootstrap {
   bool _disposed = false;
   Timer? _poll;
 
-  static String _defaultPlatform() =>
-      Platform.isIOS ? 'IOS' : 'ANDROID';
+  static String _defaultPlatform() => Platform.isIOS ? 'IOS' : 'ANDROID';
 
   /// One-time app-start work — call from the app shell after the first frame.
   Future<void> bootstrap() async {

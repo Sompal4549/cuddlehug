@@ -9,7 +9,9 @@ import 'package:cuddlehug_app/core/config/app_config.dart';
 String resolveImageUrl(String? url) {
   if (url == null || url.trim().isEmpty) return 'assets/images/placeholder.png';
   final trimmed = url.trim();
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:')) {
+  if (trimmed.startsWith('http://') ||
+      trimmed.startsWith('https://') ||
+      trimmed.startsWith('data:')) {
     return trimmed;
   }
   if (trimmed.startsWith('/images/')) {

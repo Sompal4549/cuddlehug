@@ -37,7 +37,8 @@ class FlutterSecureBackend implements SecureBackend {
 /// Encrypted storage for the refresh token and guest cart session id
 /// (plan §5.2).
 class SecureStore {
-  new({SecureBackend? storage}) : _storage = storage ?? const FlutterSecureBackend();
+  new({SecureBackend? storage})
+    : _storage = storage ?? const FlutterSecureBackend();
 
   static const _refreshTokenKey = 'ch_refresh';
   static const _sessionIdKey = 'ch_sid';
@@ -65,9 +66,9 @@ class SecureStore {
   /// RFC-4122 v4 shaped UUID (server validates format only).
   String _newSessionId() {
     String hex(int count) => List.generate(
-          count,
-          (_) => _random.nextInt(16).toRadixString(16),
-        ).join();
+      count,
+      (_) => _random.nextInt(16).toRadixString(16),
+    ).join();
     // 13th char = 4 (version), 17th char ∈ {8,9,a,b} (variant).
     const variants = ['8', '9', 'a', 'b'];
     return '${hex(8)}-${hex(4)}-4${hex(3)}-'

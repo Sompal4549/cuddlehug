@@ -70,7 +70,10 @@ abstract final class AppTheme {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: const BorderSide(color: AppColors.destructive, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.destructive,
+            width: 1.5,
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -107,7 +110,10 @@ abstract final class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
-      dividerTheme: const DividerThemeData(color: AppColors.border, thickness: 1),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.border,
+        thickness: 1,
+      ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.secondary,
         selectedColor: AppColors.primary,

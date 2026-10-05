@@ -36,13 +36,12 @@ class AddressesState {
     String? busyId,
     bool clearError = false,
     bool clearBusy = false,
-  }) =>
-      AddressesState(
-        items: items ?? this.items,
-        loading: loading ?? this.loading,
-        error: clearError ? null : error ?? this.error,
-        busyId: clearBusy ? null : busyId ?? this.busyId,
-      );
+  }) => AddressesState(
+    items: items ?? this.items,
+    loading: loading ?? this.loading,
+    error: clearError ? null : error ?? this.error,
+    busyId: clearBusy ? null : busyId ?? this.busyId,
+  );
 }
 
 class AddressesController extends Notifier<AddressesState> {
@@ -151,7 +150,6 @@ class AddressesController extends Notifier<AddressesState> {
   AddressRepository get _repo => ref.read(addressRepositoryProvider);
 }
 
-final addressesProvider =
-    NotifierProvider<AddressesController, AddressesState>(
+final addressesProvider = NotifierProvider<AddressesController, AddressesState>(
   AddressesController.new,
 );

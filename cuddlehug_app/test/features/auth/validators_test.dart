@@ -12,7 +12,10 @@ void main() {
 
   test('new password mirrors the backend zod rules', () {
     expect(validateNewPassword(''), 'Password is required');
-    expect(validateNewPassword('abc1'), 'Password must be at least 8 characters');
+    expect(
+      validateNewPassword('abc1'),
+      'Password must be at least 8 characters',
+    );
     expect(validateNewPassword('12345678'), 'Password must contain a letter');
     expect(validateNewPassword('abcdefghi'), 'Password must contain a number');
     expect(validateNewPassword('abcd1234'), isNull);

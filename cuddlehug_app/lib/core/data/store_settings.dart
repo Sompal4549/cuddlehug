@@ -1,4 +1,5 @@
 import 'package:cuddlehug_app/app_providers.dart';
+import 'package:cuddlehug_app/core/cache/ttl_cache.dart';
 import 'package:cuddlehug_app/core/network/api_endpoints.dart';
 import 'package:cuddlehug_app/core/network/dio_client.dart';
 import 'package:flutter/foundation.dart';
@@ -34,11 +35,42 @@ class StoreSettings {
       (raw['shipping.freeThreshold'] as num?)?.toInt() ?? 0;
 }
 
+/// Cache key for the raw settings payload (scoped by environment inside the
+/// cache itself).
+const storeSettingsCacheKey = 'settings';
+
+/// Static configuration → **cache-first** (plan §19): a warm cache answers
+/// without a round-trip; a cold cache fetches once and keeps the payload for
+/// [settingsTtl]. If the fetch fails, the last known copy (even expired) is
+/// served instead of an error, so store hours / tax / payment flags never
+/// blank out on a flaky connection.
+///
+/// Manual refresh: [invalidateStoreSettings].
 final storeSettingsProvider = FutureProvider<StoreSettings>((ref) async {
-  final client = ref.watch(dioClientProvider);
-  final result = await _fetchSettings(client);
-  return StoreSettings(result);
+  final cache = ref.watch(ttlCacheProvider);
+  final cached = cache.read<Map<String, dynamic>>(storeSettingsCacheKey);
+  if (cached != null) return StoreSettings(cached);
+  try {
+    final result = await _fetchSettings(ref.watch(dioClientProvider));
+    cache.write(storeSettingsCacheKey, result, ttl: settingsTtl);
+    return StoreSettings(result);
+  } catch (_) {
+    final stale = cache.readStale<Map<String, dynamic>>(storeSettingsCacheKey);
+    if (stale != null) return StoreSettings(stale);
+    rethrow;
+  }
 });
+
+/// Settings are near-static; 6h keeps startup offline-friendly without
+/// pinning a stale store status for a whole day.
+const settingsTtl = Duration(hours: 6);
+
+/// Drops the cached copy and re-runs the provider — the only supported way
+/// to force `GET /api/settings` again.
+void invalidateStoreSettings(WidgetRef ref) {
+  ref.read(ttlCacheProvider).invalidate(storeSettingsCacheKey);
+  ref.invalidate(storeSettingsProvider);
+}
 
 Future<Map<String, dynamic>> _fetchSettings(DioClient client) async {
   final result = await client.get<Map<String, dynamic>>(

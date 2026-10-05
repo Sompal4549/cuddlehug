@@ -11,10 +11,10 @@ AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       type: json['type'] as String,
       title: json['title'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
       body: json['body'] as String?,
       data: json['data'],
       read: json['read'] as bool? ?? false,
-      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$AppNotificationToJson(AppNotification instance) =>

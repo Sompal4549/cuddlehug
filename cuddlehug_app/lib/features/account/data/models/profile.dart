@@ -8,11 +8,7 @@ part 'profile.g.dart';
 @immutable
 @JsonSerializable()
 class ProfileStats {
-  const new({
-    this.orders = 0,
-    this.wishlist = 0,
-    this.unreadNotifications = 0,
-  });
+  const new({this.orders = 0, this.wishlist = 0, this.unreadNotifications = 0});
 
   factory fromJson(Map<String, dynamic> json) => _$ProfileStatsFromJson(json);
 
@@ -32,7 +28,8 @@ class ProfileStats {
 class ProfileResponse {
   const new({required this.user, required this.stats});
 
-  factory fromJson(Map<String, dynamic> json) => _$ProfileResponseFromJson(json);
+  factory fromJson(Map<String, dynamic> json) =>
+      _$ProfileResponseFromJson(json);
 
   final User user;
   final ProfileStats stats;

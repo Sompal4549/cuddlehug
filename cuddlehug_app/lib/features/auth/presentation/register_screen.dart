@@ -42,7 +42,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _loading = true);
     try {
-      await ref.read(authControllerProvider.notifier).register(
+      await ref
+          .read(authControllerProvider.notifier)
+          .register(
             firstName: _firstName.text.trim(),
             lastName: _lastName.text.trim(),
             email: _email.text.trim(),
@@ -152,7 +154,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 onFieldSubmitted: (_) => _submit(),
               ),
               const SizedBox(height: AppSpacing.lg),
-              AppButton(label: 'Create account', loading: _loading, onPressed: _submit),
+              AppButton(
+                label: 'Create account',
+                loading: _loading,
+                onPressed: _submit,
+              ),
             ],
           ),
         ),

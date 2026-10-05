@@ -33,25 +33,25 @@ class AuthErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          color: AppColors.accent,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+    width: double.infinity,
+    padding: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: AppColors.accent,
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+    ),
+    child: Row(
+      children: [
+        const Icon(Icons.error_outline, color: AppColors.destructive, size: 20),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 14, color: AppColors.foreground),
+          ),
         ),
-        child: Row(
-          children: [
-            const Icon(Icons.error_outline, color: AppColors.destructive, size: 20),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(fontSize: 14, color: AppColors.foreground),
-              ),
-            ),
-          ],
-        ),
-      );
+      ],
+    ),
+  );
 }
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -80,7 +80,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _loading = true);
     try {
-      await ref.read(authControllerProvider.notifier).login(
+      await ref
+          .read(authControllerProvider.notifier)
+          .login(
             email: _emailController.text.trim(),
             password: _passwordController.text,
           );
@@ -130,7 +132,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                autofillHints: const [AutofillHints.email, AutofillHints.username],
+                autofillHints: const [
+                  AutofillHints.email,
+                  AutofillHints.username,
+                ],
                 validator: validateEmail,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -153,7 +158,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.xs),
-              AppButton(label: 'Sign in', loading: _loading, onPressed: _submit),
+              AppButton(
+                label: 'Sign in',
+                loading: _loading,
+                onPressed: _submit,
+              ),
               const SizedBox(height: AppSpacing.lg),
               Wrap(
                 alignment: WrapAlignment.center,
@@ -167,11 +176,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onPressed: _loading
                         ? null
                         : () => context.push(
-                              '${RoutePaths.register}${Uri(queryParameters: {
-                                if (GoRouterState.of(context).uri.queryParameters['next'] != null)
-                                  'next': GoRouterState.of(context).uri.queryParameters['next'],
-                              })}',
-                            ),
+                            '${RoutePaths.register}${Uri(queryParameters: {if (GoRouterState.of(context).uri.queryParameters['next'] != null) 'next': GoRouterState.of(context).uri.queryParameters['next']})}',
+                          ),
                     child: const Text('Create account'),
                   ),
                 ],

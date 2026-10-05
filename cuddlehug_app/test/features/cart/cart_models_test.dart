@@ -7,59 +7,58 @@ void main() {
     String total = '672.60',
     bool freeShipping = true,
     Map<String, dynamic>? coupon,
-  }) =>
-      <String, dynamic>{
-        'id': 'cart1',
-        'itemCount': itemCount,
-        'items': [
-          {
-            'id': 'line1',
-            'variantId': 'v1',
-            'quantity': 2,
-            'maxQuantity': 10,
-            'inStock': true,
-            'available': 7,
-            'product': {
-              'id': 'p1',
-              'name': 'Giant Teddy Bear',
-              'slug': 'giant-teddy-bear',
-              'image': '/images/teddy.jpg',
-              'status': 'ACTIVE',
-            },
-            'variant': {
-              'id': 'v1',
-              'size': 'GIANT',
-              'color': 'BROWN',
-              'sku': 'TDY-GI-BRN',
-              'price': '299.00',
-              'mrp': '499.00',
-            },
-          },
-        ],
-        'coupon': coupon,
-        'summary': {
-          'subtotal': '598.00',
-          'mrpTotal': '998.00',
-          'productSavings': '400.00',
-          'couponDiscount': '30.00',
-          'discountedSubtotal': '568.00',
-          'shipping': '0.00',
-          'tax': '104.60',
-          'total': total,
-          'freeShippingUnlocked': freeShipping,
-          'lines': [
-            {
-              'variantId': 'v1',
-              'quantity': 2,
-              'unitPrice': '299.00',
-              'mrp': '499.00',
-              'lineTotal': '598.00',
-              'lineMrpTotal': '998.00',
-              'savings': '400.00',
-            },
-          ],
+  }) => <String, dynamic>{
+    'id': 'cart1',
+    'itemCount': itemCount,
+    'items': [
+      {
+        'id': 'line1',
+        'variantId': 'v1',
+        'quantity': 2,
+        'maxQuantity': 10,
+        'inStock': true,
+        'available': 7,
+        'product': {
+          'id': 'p1',
+          'name': 'Giant Teddy Bear',
+          'slug': 'giant-teddy-bear',
+          'image': '/images/teddy.jpg',
+          'status': 'ACTIVE',
         },
-      };
+        'variant': {
+          'id': 'v1',
+          'size': 'GIANT',
+          'color': 'BROWN',
+          'sku': 'TDY-GI-BRN',
+          'price': '299.00',
+          'mrp': '499.00',
+        },
+      },
+    ],
+    'coupon': coupon,
+    'summary': {
+      'subtotal': '598.00',
+      'mrpTotal': '998.00',
+      'productSavings': '400.00',
+      'couponDiscount': '30.00',
+      'discountedSubtotal': '568.00',
+      'shipping': '0.00',
+      'tax': '104.60',
+      'total': total,
+      'freeShippingUnlocked': freeShipping,
+      'lines': [
+        {
+          'variantId': 'v1',
+          'quantity': 2,
+          'unitPrice': '299.00',
+          'mrp': '499.00',
+          'lineTotal': '598.00',
+          'lineMrpTotal': '998.00',
+          'savings': '400.00',
+        },
+      ],
+    },
+  };
 
   test('parses the full cart DTO', () {
     final cart = Cart.fromJson(cartJson());

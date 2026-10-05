@@ -44,16 +44,12 @@ class NetworkImageView extends StatelessWidget {
   }
 
   Widget _placeholder() => Container(
-        width: width,
-        height: height,
-        color: AppColors.muted,
-        alignment: Alignment.center,
-        child: const Icon(
-          Icons.image_rounded,
-          color: AppColors.border,
-          size: 32,
-        ),
-      );
+    width: width,
+    height: height,
+    color: AppColors.muted,
+    alignment: Alignment.center,
+    child: const Icon(Icons.image_rounded, color: AppColors.border, size: 32),
+  );
 
   Widget _fallback(BuildContext context, Object? error, StackTrace? stack) =>
       Image.asset(

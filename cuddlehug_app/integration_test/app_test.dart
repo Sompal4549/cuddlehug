@@ -68,20 +68,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Welcome back'), findsOneWidget);
 
-    await tester.enterText(
-      find.byType(TextFormField).at(0),
-      _customerEmail,
-    );
-    await tester.enterText(
-      find.byType(TextFormField).at(1),
-      _customerPassword,
-    );
+    await tester.enterText(find.byType(TextFormField).at(0), _customerEmail);
+    await tester.enterText(find.byType(TextFormField).at(1), _customerPassword);
     await tester.tap(find.widgetWithText(AppButton, 'Sign in'));
     await tester.pumpAndSettle(const Duration(seconds: 2));
   }
 
-  testWidgets('guest boots into a populated home and can browse the shop',
-      (tester) async {
+  testWidgets('guest boots into a populated home and can browse the shop', (
+    tester,
+  ) async {
     await launchApp(tester);
 
     // Home renders from GET /content/home.
@@ -99,8 +94,9 @@ void main() {
     expect(find.text('Add to cart'), findsOneWidget);
   });
 
-  testWidgets('sign-in persists the session and lands on Account',
-      (tester) async {
+  testWidgets('sign-in persists the session and lands on Account', (
+    tester,
+  ) async {
     await launchApp(tester);
     await signIn(tester);
 
@@ -109,8 +105,9 @@ void main() {
     expect(find.text('Welcome back'), findsNothing);
   });
 
-  testWidgets('guest cart survives and merges into the user cart at sign-in',
-      (tester) async {
+  testWidgets('guest cart survives and merges into the user cart at sign-in', (
+    tester,
+  ) async {
     await launchApp(tester);
 
     // Guest adds an item (server mints/uses ch_sid).
@@ -151,8 +148,9 @@ void main() {
     expect(find.textContaining('CUDDLE10'), findsWidgets);
   });
 
-  testWidgets('COD checkout places an order and shows confirmation',
-      (tester) async {
+  testWidgets('COD checkout places an order and shows confirmation', (
+    tester,
+  ) async {
     await launchApp(tester);
     await signIn(tester);
 
@@ -192,8 +190,9 @@ void main() {
     expect(find.textContaining('CH-'), findsWidgets);
   });
 
-  testWidgets('sign-out returns to guest and re-guards protected routes',
-      (tester) async {
+  testWidgets('sign-out returns to guest and re-guards protected routes', (
+    tester,
+  ) async {
     await launchApp(tester);
     await signIn(tester);
     expect(find.text('My orders'), findsOneWidget);

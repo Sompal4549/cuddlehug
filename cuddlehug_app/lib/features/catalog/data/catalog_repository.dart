@@ -33,25 +33,17 @@ class CatalogRepository {
     );
   }
 
-  Future<List<ProductCard>> featured({int limit = 8}) => _cardList(
-        ApiEndpoints.productsFeatured,
-        limit: limit,
-      );
+  Future<List<ProductCard>> featured({int limit = 8}) =>
+      _cardList(ApiEndpoints.productsFeatured, limit: limit);
 
-  Future<List<ProductCard>> bestSellers({int limit = 8}) => _cardList(
-        ApiEndpoints.productsBestSellers,
-        limit: limit,
-      );
+  Future<List<ProductCard>> bestSellers({int limit = 8}) =>
+      _cardList(ApiEndpoints.productsBestSellers, limit: limit);
 
-  Future<List<ProductCard>> newArrivals({int limit = 8}) => _cardList(
-        ApiEndpoints.productsNewArrivals,
-        limit: limit,
-      );
+  Future<List<ProductCard>> newArrivals({int limit = 8}) =>
+      _cardList(ApiEndpoints.productsNewArrivals, limit: limit);
 
-  Future<List<ProductCard>> related(String slug, {int limit = 6}) => _cardList(
-        ApiEndpoints.relatedProducts(slug),
-        limit: limit,
-      );
+  Future<List<ProductCard>> related(String slug, {int limit = 6}) =>
+      _cardList(ApiEndpoints.relatedProducts(slug), limit: limit);
 
   Future<ProductDetail> productDetail(String slug) async {
     final result = await _client.get<ProductDetail>(
@@ -115,8 +107,7 @@ class CatalogRepository {
   static List<T> _itemList<T>(
     Object? json,
     T Function(Map<String, dynamic>) fromJson,
-  ) =>
-      ((json! as Map<String, dynamic>)['items']! as List<dynamic>)
-          .map<T>((item) => fromJson(item as Map<String, dynamic>))
-          .toList();
+  ) => ((json! as Map<String, dynamic>)['items']! as List<dynamic>)
+      .map<T>((item) => fromJson(item as Map<String, dynamic>))
+      .toList();
 }

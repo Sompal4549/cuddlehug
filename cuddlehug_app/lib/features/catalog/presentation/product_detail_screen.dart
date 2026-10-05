@@ -50,15 +50,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   Future<void> _toggleWishlist(ProductDetail product) async {
     final authenticated = ref.read(authControllerProvider).isAuthenticated;
     if (!authenticated) {
-      final next = Uri.encodeComponent(
-        RoutePaths.productDetail(product.slug),
-      );
+      final next = Uri.encodeComponent(RoutePaths.productDetail(product.slug));
       await context.push('${RoutePaths.login}?next=$next');
       return;
     }
     try {
-      final added =
-          await ref.read(wishlistProvider.notifier).toggle(product.id);
+      final added = await ref
+          .read(wishlistProvider.notifier)
+          .toggle(product.id);
       if (mounted) {
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
@@ -93,15 +92,17 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             error: (_, _) => const SizedBox.shrink(),
             data: (product) {
               final wishlisted = ref.watch(
-                wishlistProvider
-                    .select((state) => state.contains(product.id)),
+                wishlistProvider.select((state) => state.contains(product.id)),
               );
               final busy = ref.watch(
-                wishlistProvider
-                    .select((state) => state.busyIds.contains(product.id)),
+                wishlistProvider.select(
+                  (state) => state.busyIds.contains(product.id),
+                ),
               );
               return IconButton(
-                tooltip: wishlisted ? 'Remove from wishlist' : 'Add to wishlist',
+                tooltip: wishlisted
+                    ? 'Remove from wishlist'
+                    : 'Add to wishlist',
                 onPressed: busy ? null : () => _toggleWishlist(product),
                 icon: busy
                     ? const SizedBox(
@@ -113,8 +114,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         wishlisted
                             ? Icons.favorite_rounded
                             : Icons.favorite_outline_rounded,
-                        color:
-                            wishlisted ? AppColors.primary : null,
+                        color: wishlisted ? AppColors.primary : null,
                       ),
               );
             },
@@ -125,13 +125,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         loading: () => const _DetailSkeleton(),
         error: (error, _) => ErrorView(
           error: error,
-          onRetry: () =>
-              ref.invalidate(productDetailProvider(widget.slug)),
+          onRetry: () => ref.invalidate(productDetailProvider(widget.slug)),
         ),
-        data: (product) => _DetailBody(
-          product: product,
-          selectedVariant: _selectedVariant,
-        ),
+        data: (product) =>
+            _DetailBody(product: product, selectedVariant: _selectedVariant),
       ),
       bottomNavigationBar: detail.value == null
           ? null
@@ -144,10 +141,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 }
 
 class _DetailBody extends StatefulWidget {
-  const new({
-    required this.product,
-    required this.selectedVariant,
-  });
+  const new({required this.product, required this.selectedVariant});
 
   final ProductDetail product;
   final ValueNotifier<ProductVariant?> selectedVariant;
@@ -171,9 +165,9 @@ class _DetailBodyState extends State<_DetailBody> {
   }
 
   List<String> get _colorsForSize => {
-        for (final variant in _variants)
-          if (_size == null || variant.size == _size) variant.color,
-      }.toList();
+    for (final variant in _variants)
+      if (_size == null || variant.size == _size) variant.color,
+  }.toList();
 
   ProductVariant? get _selected {
     final size = _size;
@@ -396,26 +390,22 @@ class _DetailBodyState extends State<_DetailBody> {
   }
 
   static List<(String, String)> _attributesOf(ProductDetail product) => [
-        if (product.material != null && product.material!.isNotEmpty)
-          ('Material', product.material!),
-        if (product.filling != null && product.filling!.isNotEmpty)
-          ('Filling', product.filling!),
-        if (product.weightGrams != null)
-          ('Weight', '${product.weightGrams} g'),
-        if (product.ageRecommendation != null &&
-            product.ageRecommendation!.isNotEmpty)
-          ('Age', product.ageRecommendation!),
-        if (product.careInstructions != null &&
-            product.careInstructions!.isNotEmpty)
-          ('Care', product.careInstructions!),
-      ];
+    if (product.material != null && product.material!.isNotEmpty)
+      ('Material', product.material!),
+    if (product.filling != null && product.filling!.isNotEmpty)
+      ('Filling', product.filling!),
+    if (product.weightGrams != null) ('Weight', '${product.weightGrams} g'),
+    if (product.ageRecommendation != null &&
+        product.ageRecommendation!.isNotEmpty)
+      ('Age', product.ageRecommendation!),
+    if (product.careInstructions != null &&
+        product.careInstructions!.isNotEmpty)
+      ('Care', product.careInstructions!),
+  ];
 }
 
 class _AddToCartBar extends ConsumerStatefulWidget {
-  const new({
-    required this.product,
-    required this.selectedVariant,
-  });
+  const new({required this.product, required this.selectedVariant});
 
   final ProductDetail product;
   final ValueNotifier<ProductVariant?> selectedVariant;
@@ -597,9 +587,10 @@ class _StockChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final available = variant?.available;
     final (text, color) = switch ((variant == null, available ?? 0)) {
-      (true, _) => product.inStock
-          ? ('In stock', AppColors.success)
-          : ('Out of stock', AppColors.destructive),
+      (true, _) =>
+        product.inStock
+            ? ('In stock', AppColors.success)
+            : ('Out of stock', AppColors.destructive),
       (_, 0) => ('Out of stock', AppColors.destructive),
       (_, <= 5) => ('Only $available left — order soon', AppColors.warning),
       _ => ('In stock', AppColors.success),
@@ -649,10 +640,7 @@ class _ReviewsSection extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Text(
               'Reviews could not be loaded.',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.mutedForeground,
-              ),
+              style: TextStyle(fontSize: 13, color: AppColors.mutedForeground),
             ),
           ),
           data: (page) => Padding(
@@ -680,7 +668,7 @@ class _ReviewsSection extends ConsumerWidget {
                                 value: page.totalReviews == 0
                                     ? 0
                                     : (page.distribution['$star'] ?? 0) /
-                                        page.totalReviews,
+                                          page.totalReviews,
                                 minHeight: 7,
                                 backgroundColor: AppColors.muted,
                                 color: AppColors.warning,
@@ -727,75 +715,75 @@ class _ReviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 14,
-                  backgroundColor: AppColors.accent,
-                  child: Text(
-                    review.user.name.isEmpty
-                        ? '?'
-                        : review.user.name[0].toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.onAccent,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        review.user.name,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.foreground,
-                        ),
-                      ),
-                      Text(
-                        formatDateTime(review.createdAt),
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: AppColors.mutedForeground,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                RatingStars(value: review.rating.toDouble(), size: 14),
-              ],
-            ),
-            if (review.title != null && review.title!.isNotEmpty) ...[
-              const SizedBox(height: 6),
-              Text(
-                review.title!,
+            CircleAvatar(
+              radius: 14,
+              backgroundColor: AppColors.accent,
+              child: Text(
+                review.user.name.isEmpty
+                    ? '?'
+                    : review.user.name[0].toUpperCase(),
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
+                  color: AppColors.onAccent,
                 ),
               ),
-            ],
-            const SizedBox(height: 4),
-            Text(
-              review.comment,
-              style: const TextStyle(
-                fontSize: 13,
-                color: AppColors.foreground,
-                height: 1.45,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    review.user.name,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.foreground,
+                    ),
+                  ),
+                  Text(
+                    formatDateTime(review.createdAt),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: AppColors.mutedForeground,
+                    ),
+                  ),
+                ],
               ),
             ),
+            RatingStars(value: review.rating.toDouble(), size: 14),
           ],
         ),
-      );
+        if (review.title != null && review.title!.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            review.title!,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: AppColors.foreground,
+            ),
+          ),
+        ],
+        const SizedBox(height: 4),
+        Text(
+          review.comment,
+          style: const TextStyle(
+            fontSize: 13,
+            color: AppColors.foreground,
+            height: 1.45,
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class _RelatedSection extends ConsumerWidget {
@@ -817,8 +805,9 @@ class _RelatedSection extends ConsumerWidget {
                   height: 300,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
                     itemCount: products.length,
                     separatorBuilder: (_, _) => const SizedBox(width: 12),
                     itemBuilder: (context, index) =>
@@ -839,13 +828,13 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-          color: AppColors.foreground,
-        ),
-      );
+    text,
+    style: const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w700,
+      color: AppColors.foreground,
+    ),
+  );
 }
 
 class _DetailSkeleton extends StatelessWidget {
@@ -853,19 +842,19 @@ class _DetailSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        children: const [
-          SkeletonBox(width: double.infinity, height: 320),
-          SizedBox(height: 16),
-          SkeletonBox(width: 240, height: 22),
-          SizedBox(height: 10),
-          SkeletonBox(width: 160, height: 18),
-          SizedBox(height: 16),
-          SkeletonBox(width: double.infinity, height: 90),
-          SizedBox(height: 16),
-          SkeletonBox(width: double.infinity, height: 140),
-        ],
-      );
+    padding: const EdgeInsets.all(AppSpacing.lg),
+    children: const [
+      SkeletonBox(width: double.infinity, height: 320),
+      SizedBox(height: 16),
+      SkeletonBox(width: 240, height: 22),
+      SizedBox(height: 10),
+      SkeletonBox(width: 160, height: 18),
+      SizedBox(height: 16),
+      SkeletonBox(width: double.infinity, height: 90),
+      SizedBox(height: 16),
+      SkeletonBox(width: double.infinity, height: 140),
+    ],
+  );
 }
 
 String _titleCase(String value) => value.isEmpty
@@ -873,10 +862,10 @@ String _titleCase(String value) => value.isEmpty
     : value[0].toUpperCase() + value.substring(1).toLowerCase();
 
 Color _swatch(String color) => switch (color) {
-      'BROWN' => const Color(0xFF8D6E63),
-      'PINK' => const Color(0xFFF48FB1),
-      'WHITE' => const Color(0xFFFAFAFA),
-      'CREAM' => const Color(0xFFFFF3E0),
-      'RED' => const Color(0xFFE57373),
-      _ => AppColors.border,
-    };
+  'BROWN' => const Color(0xFF8D6E63),
+  'PINK' => const Color(0xFFF48FB1),
+  'WHITE' => const Color(0xFFFAFAFA),
+  'CREAM' => const Color(0xFFFFF3E0),
+  'RED' => const Color(0xFFE57373),
+  _ => AppColors.border,
+};

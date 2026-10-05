@@ -23,13 +23,13 @@ AppNotification _notification(String id, {bool read = false}) =>
 
 class _FakeNotificationRepository extends NotificationRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool failMarkRead = false;
   final List<String> calls = [];
@@ -57,8 +57,7 @@ class _FakeNotificationRepository extends NotificationRepository {
   }
 
   @override
-  Future<int> unreadCount() async =>
-      rows.where((row) => !row.read).length;
+  Future<int> unreadCount() async => rows.where((row) => !row.read).length;
 
   @override
   Future<void> readAll() async {
@@ -86,14 +85,14 @@ class _FakeNotificationRepository extends NotificationRepository {
 class _AuthedAuth extends AuthController {
   @override
   AuthState build() => const AuthState.authenticated(
-        User(
-          id: 'u1',
-          email: 'asha@example.com',
-          firstName: 'Asha',
-          lastName: 'Patel',
-          role: 'CUSTOMER',
-        ),
-      );
+    User(
+      id: 'u1',
+      email: 'asha@example.com',
+      firstName: 'Asha',
+      lastName: 'Patel',
+      role: 'CUSTOMER',
+    ),
+  );
 }
 
 class _GuestAuth extends AuthController {
@@ -141,14 +140,16 @@ void main() {
     expect(repo.calls, ['list:1', 'list:2']);
   });
 
-  test('markRead flips the row, decrements unread and calls the repo',
-      () async {
-    await load();
-    await controller().markRead('n1');
-    expect(state().items.first.read, isTrue);
-    expect(state().unread, 1);
-    expect(repo.calls, contains('read:n1'));
-  });
+  test(
+    'markRead flips the row, decrements unread and calls the repo',
+    () async {
+      await load();
+      await controller().markRead('n1');
+      expect(state().items.first.read, isTrue);
+      expect(state().unread, 1);
+      expect(repo.calls, contains('read:n1'));
+    },
+  );
 
   test('markRead is a no-op for rows already read', () async {
     await load();

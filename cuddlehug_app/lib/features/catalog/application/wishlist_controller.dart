@@ -43,16 +43,15 @@ class WishlistState {
     Set<String>? busyIds,
     Object? error,
     bool clearError = false,
-  }) =>
-      WishlistState(
-        items: items ?? this.items,
-        meta: meta ?? this.meta,
-        productIds: productIds ?? this.productIds,
-        loading: loading ?? this.loading,
-        loadingMore: loadingMore ?? this.loadingMore,
-        busyIds: busyIds ?? this.busyIds,
-        error: clearError ? null : error ?? this.error,
-      );
+  }) => WishlistState(
+    items: items ?? this.items,
+    meta: meta ?? this.meta,
+    productIds: productIds ?? this.productIds,
+    loading: loading ?? this.loading,
+    loadingMore: loadingMore ?? this.loadingMore,
+    busyIds: busyIds ?? this.busyIds,
+    error: clearError ? null : error ?? this.error,
+  );
 }
 
 /// Loads on sign-in (rebuilt via [authControllerProvider] watch) and clears
@@ -138,5 +137,6 @@ class WishlistController extends Notifier<WishlistState> {
   WishlistRepository get _repo => ref.read(wishlistRepositoryProvider);
 }
 
-final wishlistProvider =
-    NotifierProvider<WishlistController, WishlistState>(WishlistController.new);
+final wishlistProvider = NotifierProvider<WishlistController, WishlistState>(
+  WishlistController.new,
+);

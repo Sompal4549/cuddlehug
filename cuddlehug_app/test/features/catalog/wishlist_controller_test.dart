@@ -11,13 +11,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 class _FakeWishlistRepository extends WishlistRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool failAdd = false;
   bool failRemove = false;
@@ -59,8 +59,7 @@ void main() {
     addTearDown(container.dispose);
   });
 
-  WishlistController controller() =>
-      container.read(wishlistProvider.notifier);
+  WishlistController controller() => container.read(wishlistProvider.notifier);
 
   test('toggle adds a product to the id set optimistically', () async {
     final added = await controller().toggle('p1');

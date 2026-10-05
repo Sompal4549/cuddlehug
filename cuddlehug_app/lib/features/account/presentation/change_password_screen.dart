@@ -43,16 +43,16 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _submitting = true);
     try {
-      await ref.read(profileProvider.notifier).changePassword(
+      await ref
+          .read(profileProvider.notifier)
+          .changePassword(
             currentPassword: _current.text,
             newPassword: _next.text,
           );
       if (!mounted) return;
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-          const SnackBar(content: Text('Password changed')),
-        );
+        ..showSnackBar(const SnackBar(content: Text('Password changed')));
       context.pop();
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -79,58 +79,58 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Change password')),
-        body: WideBody(
-          child: ListView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            children: [
-            const Text(
-              'Changing your password signs you out on other devices.',
-              style: TextStyle(color: AppColors.mutedForeground),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppTextField(
-                    controller: _current,
-                    label: 'Current password',
-                    obscureText: true,
-                    textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.password],
-                    validator: validateRequiredPassword,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    controller: _next,
-                    label: 'New password',
-                    obscureText: true,
-                    textInputAction: TextInputAction.next,
-                    validator: validateNewPassword,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    controller: _confirm,
-                    label: 'Confirm new password',
-                    obscureText: true,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) => unawaited(_submit()),
-                    validator: _confirmValidator,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  AppButton(
-                    label: 'Change password',
-                    loading: _submitting,
-                    onPressed: _submit,
-                  ),
-                ],
-              ),
-            ),
-          ],
+    appBar: AppBar(title: const Text('Change password')),
+    body: WideBody(
+      child: ListView(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        children: [
+          const Text(
+            'Changing your password signs you out on other devices.',
+            style: TextStyle(color: AppColors.mutedForeground),
           ),
-        ),
-      );
+          const SizedBox(height: AppSpacing.lg),
+          Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppTextField(
+                  controller: _current,
+                  label: 'Current password',
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                  autofillHints: const [AutofillHints.password],
+                  validator: validateRequiredPassword,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppTextField(
+                  controller: _next,
+                  label: 'New password',
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                  validator: validateNewPassword,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppTextField(
+                  controller: _confirm,
+                  label: 'Confirm new password',
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => unawaited(_submit()),
+                  validator: _confirmValidator,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                AppButton(
+                  label: 'Change password',
+                  loading: _submitting,
+                  onPressed: _submit,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

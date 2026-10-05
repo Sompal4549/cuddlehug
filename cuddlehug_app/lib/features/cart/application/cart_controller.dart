@@ -38,14 +38,13 @@ class CartState {
     bool? couponBusy,
     bool clearError = false,
     bool clearCart = false,
-  }) =>
-      CartState(
-        cart: clearCart ? null : cart ?? this.cart,
-        loading: loading ?? this.loading,
-        error: clearError ? null : error ?? this.error,
-        busyVariantIds: busyVariantIds ?? this.busyVariantIds,
-        couponBusy: couponBusy ?? this.couponBusy,
-      );
+  }) => CartState(
+    cart: clearCart ? null : cart ?? this.cart,
+    loading: loading ?? this.loading,
+    error: clearError ? null : error ?? this.error,
+    busyVariantIds: busyVariantIds ?? this.busyVariantIds,
+    couponBusy: couponBusy ?? this.couponBusy,
+  );
 }
 
 /// Cart mutations return the server's full cart DTO, so each call replaces
@@ -55,9 +54,7 @@ class CartState {
 class CartController extends Notifier<CartState> {
   @override
   CartState build() {
-    ref.watch(
-      authControllerProvider.select((auth) => auth.isAuthenticated),
-    );
+    ref.watch(authControllerProvider.select((auth) => auth.isAuthenticated));
     scheduleMicrotask(load);
     return const CartState(loading: true);
   }
@@ -73,17 +70,15 @@ class CartController extends Notifier<CartState> {
     }
   }
 
-  Future<Cart> addItem(String variantId, {int quantity = 1}) =>
-      _mutate(variantId, () => _repo.addItem(
-            variantId: variantId,
-            quantity: quantity,
-          ));
+  Future<Cart> addItem(String variantId, {int quantity = 1}) => _mutate(
+    variantId,
+    () => _repo.addItem(variantId: variantId, quantity: quantity),
+  );
 
-  Future<Cart> updateQuantity(String variantId, int quantity) =>
-      _mutate(variantId, () => _repo.updateItem(
-            variantId: variantId,
-            quantity: quantity,
-          ));
+  Future<Cart> updateQuantity(String variantId, int quantity) => _mutate(
+    variantId,
+    () => _repo.updateItem(variantId: variantId, quantity: quantity),
+  );
 
   Future<Cart> removeItem(String itemId, {required String variantId}) =>
       _mutate(variantId, () => _repo.removeItem(itemId));
@@ -115,10 +110,7 @@ class CartController extends Notifier<CartState> {
 
   void clearError() => state = state.copyWith(clearError: true);
 
-  Future<Cart> _mutate(
-    String variantId,
-    Future<Cart> Function() run,
-  ) async {
+  Future<Cart> _mutate(String variantId, Future<Cart> Function() run) async {
     state = state.copyWith(
       busyVariantIds: {...state.busyVariantIds, variantId},
       clearError: true,
@@ -139,5 +131,6 @@ class CartController extends Notifier<CartState> {
   CartRepository get _repo => ref.read(cartRepositoryProvider);
 }
 
-final cartProvider =
-    NotifierProvider<CartController, CartState>(CartController.new);
+final cartProvider = NotifierProvider<CartController, CartState>(
+  CartController.new,
+);

@@ -17,26 +17,25 @@ class AddressRepository {
   Future<List<Address>> list() async {
     final result = await _client.get<List<Address>>(
       ApiEndpoints.addresses,
-      decode: (json) => ((json! as Map<String, dynamic>)['items']
-                  as List<dynamic>? ??
-              const <dynamic>[])
-          .map<Address>((item) => Address.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      decode: (json) =>
+          ((json! as Map<String, dynamic>)['items'] as List<dynamic>? ??
+                  const <dynamic>[])
+              .map<Address>(
+                (item) => Address.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
     return result.data;
   }
 
-  Future<Address> create(AddressInput input) => _write(
-        ApiEndpoints.addresses,
-        body: input.toJson(),
-        isPatch: false,
-      );
+  Future<Address> create(AddressInput input) =>
+      _write(ApiEndpoints.addresses, body: input.toJson(), isPatch: false);
 
   Future<Address> update(String id, AddressInput input) => _write(
-        '${ApiEndpoints.addresses}/$id',
-        body: input.toJson(),
-        isPatch: true,
-      );
+    '${ApiEndpoints.addresses}/$id',
+    body: input.toJson(),
+    isPatch: true,
+  );
 
   Future<void> remove(String id) async {
     await _client.delete<dynamic>(

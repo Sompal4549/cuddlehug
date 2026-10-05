@@ -12,7 +12,12 @@ part 'payment_intent.g.dart';
 class PaymentIntent {
   const new({
     required this.devMode,
-    required this.orderId, required this.orderNumber, required this.amount, required this.amountDisplay, required this.currency, this.keyId,
+    required this.orderId,
+    required this.orderNumber,
+    required this.amount,
+    required this.amountDisplay,
+    required this.currency,
+    this.keyId,
     this.razorpayOrderId,
   });
 

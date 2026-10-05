@@ -15,10 +15,8 @@ class OrderConfirmationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final orderId = GoRouterState.of(context)
-            .uri
-            .queryParameters['orderId'] ??
-        '';
+    final orderId =
+        GoRouterState.of(context).uri.queryParameters['orderId'] ?? '';
     final detail = orderId.isEmpty
         ? null
         : ref.watch(orderDetailProvider(orderId));
@@ -69,90 +67,83 @@ class OrderConfirmationScreen extends ConsumerWidget {
     required String orderId,
     required String? orderNumber,
     required DateTime? estimated,
-  }) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: AppColors.accent,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.check_rounded,
-              size: 48,
-              color: AppColors.success,
-            ),
+  }) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: AppColors.accent,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.check_rounded,
+          size: 48,
+          color: AppColors.success,
+        ),
+      ),
+      const SizedBox(height: AppSpacing.lg),
+      const Text(
+        'Order confirmed!',
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+          color: AppColors.foreground,
+        ),
+      ),
+      const SizedBox(height: AppSpacing.sm),
+      const Text(
+        'Thank you — your cuddly companions are on the way.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 14, color: AppColors.mutedForeground),
+      ),
+      if (orderNumber != null) ...[
+        const SizedBox(height: AppSpacing.lg),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.card,
+            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           ),
-          const SizedBox(height: AppSpacing.lg),
-          const Text(
-            'Order confirmed!',
-            style: TextStyle(
-              fontSize: 22,
+          child: Text(
+            orderNumber,
+            style: const TextStyle(
+              fontSize: 14,
               fontWeight: FontWeight.w700,
               color: AppColors.foreground,
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          const Text(
-            'Thank you — your cuddly companions are on the way.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.mutedForeground,
-            ),
+        ),
+      ],
+      if (estimated != null) ...[
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          'Estimated delivery: ${formatDate(estimated)}',
+          style: const TextStyle(
+            fontSize: 13,
+            color: AppColors.mutedForeground,
           ),
-          if (orderNumber != null) ...[
-            const SizedBox(height: AppSpacing.lg),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 8,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.card,
-                border: Border.all(color: AppColors.border),
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              ),
-              child: Text(
-                orderNumber,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
-                ),
-              ),
-            ),
-          ],
-          if (estimated != null) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Estimated delivery: ${formatDate(estimated)}',
-              style: const TextStyle(
-                fontSize: 13,
-                color: AppColors.mutedForeground,
-              ),
-            ),
-          ],
-          const SizedBox(height: AppSpacing.xl),
-          if (orderId.isNotEmpty)
-            SizedBox(
-              width: 220,
-              child: AppButton(
-                label: 'Track order',
-                onPressed: () => context.go(RoutePaths.orderDetail(orderId)),
-              ),
-            ),
-          const SizedBox(height: AppSpacing.sm),
-          SizedBox(
-            width: 220,
-            child: AppButton(
-              label: 'Continue shopping',
-              outlined: true,
-              onPressed: () => context.go(RoutePaths.home),
-            ),
+        ),
+      ],
+      const SizedBox(height: AppSpacing.xl),
+      if (orderId.isNotEmpty)
+        SizedBox(
+          width: 220,
+          child: AppButton(
+            label: 'Track order',
+            onPressed: () => context.go(RoutePaths.orderDetail(orderId)),
           ),
-        ],
-      );
+        ),
+      const SizedBox(height: AppSpacing.sm),
+      SizedBox(
+        width: 220,
+        child: AppButton(
+          label: 'Continue shopping',
+          outlined: true,
+          onPressed: () => context.go(RoutePaths.home),
+        ),
+      ),
+    ],
+  );
 }

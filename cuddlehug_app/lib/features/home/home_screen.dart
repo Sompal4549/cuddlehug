@@ -23,11 +23,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final home = ref.watch(homeContentProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          home.value?.storeName ?? 'CuddleHug',
-        ),
-      ),
+      appBar: AppBar(title: Text(home.value?.storeName ?? 'CuddleHug')),
       body: home.when(
         loading: () => const _HomeSkeleton(),
         error: (error, _) => ErrorView(
@@ -56,9 +52,7 @@ class _HomeBody extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
       children: [
-        if (content.hero.isNotEmpty) ...[
-          _HeroCarousel(slides: content.hero),
-        ],
+        if (content.hero.isNotEmpty) ...[_HeroCarousel(slides: content.hero)],
         Padding(
           padding: const EdgeInsets.fromLTRB(
             AppSpacing.lg,
@@ -156,49 +150,47 @@ class _HeroCarouselState extends State<_HeroCarousel> {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          SizedBox(
-            height: 190,
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: widget.slides.length,
-              onPageChanged: (page) => setState(() => _index = page),
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.sm,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-                  child: NetworkImageView(
-                    url: widget.slides[index].image,
-                    height: 180,
-                  ),
-                ),
+    children: [
+      SizedBox(
+        height: 190,
+        child: PageView.builder(
+          controller: _controller,
+          itemCount: widget.slides.length,
+          onPageChanged: (page) => setState(() => _index = page),
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.sm,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+              child: NetworkImageView(
+                url: widget.slides[index].image,
+                height: 180,
               ),
             ),
           ),
-          if (widget.slides.length > 1)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (final i in Iterable<int>.generate(widget.slides.length))
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    width: i == _index ? 18 : 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: i == _index
-                          ? AppColors.primary
-                          : AppColors.border,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-              ],
-            ),
-        ],
-      );
+        ),
+      ),
+      if (widget.slides.length > 1)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (final i in Iterable<int>.generate(widget.slides.length))
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: i == _index ? 18 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: i == _index ? AppColors.primary : AppColors.border,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+          ],
+        ),
+    ],
+  );
 }
 
 class _CategoryTile extends StatelessWidget {
@@ -208,35 +200,31 @@ class _CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 96,
-        child: InkWell(
-          onTap: () => context.push(RoutePaths.categoryLanding(category.slug)),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                child: NetworkImageView(
-                  url: category.image,
-                  width: 96,
-                  height: 96,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                category.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.foreground,
-                ),
-              ),
-            ],
+    width: 96,
+    child: InkWell(
+      onTap: () => context.push(RoutePaths.categoryLanding(category.slug)),
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+            child: NetworkImageView(url: category.image, width: 96, height: 96),
           ),
-        ),
-      );
+          const SizedBox(height: 6),
+          Text(
+            category.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.foreground,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _ProductRow extends StatelessWidget {
@@ -246,16 +234,16 @@ class _ProductRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 300,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          itemCount: products.length,
-          separatorBuilder: (_, _) => const SizedBox(width: 12),
-          itemBuilder: (context, index) =>
-              ProductMiniCard(product: products[index]),
-        ),
-      );
+    height: 300,
+    child: ListView.separated(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      itemCount: products.length,
+      separatorBuilder: (_, _) => const SizedBox(width: 12),
+      itemBuilder: (context, index) =>
+          ProductMiniCard(product: products[index]),
+    ),
+  );
 }
 
 class _HomeSkeleton extends StatelessWidget {
@@ -263,31 +251,31 @@ class _HomeSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        children: const [
-          SkeletonBox(width: double.infinity, height: 180),
-          SizedBox(height: 16),
-          SkeletonBox(width: 200, height: 18),
-          SizedBox(height: 12),
-          Row(
-            children: [
-              SkeletonBox(width: 96, height: 120),
-              SizedBox(width: 12),
-              SkeletonBox(width: 96, height: 120),
-              SizedBox(width: 12),
-              SkeletonBox(width: 96, height: 120),
-            ],
-          ),
-          SizedBox(height: 24),
-          SkeletonBox(width: 160, height: 18),
-          SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(child: SkeletonBox(width: double.infinity, height: 240)),
-              SizedBox(width: 12),
-              Expanded(child: SkeletonBox(width: double.infinity, height: 240)),
-            ],
-          ),
+    padding: const EdgeInsets.all(AppSpacing.lg),
+    children: const [
+      SkeletonBox(width: double.infinity, height: 180),
+      SizedBox(height: 16),
+      SkeletonBox(width: 200, height: 18),
+      SizedBox(height: 12),
+      Row(
+        children: [
+          SkeletonBox(width: 96, height: 120),
+          SizedBox(width: 12),
+          SkeletonBox(width: 96, height: 120),
+          SizedBox(width: 12),
+          SkeletonBox(width: 96, height: 120),
         ],
-      );
+      ),
+      SizedBox(height: 24),
+      SkeletonBox(width: 160, height: 18),
+      SizedBox(height: 12),
+      Row(
+        children: [
+          Expanded(child: SkeletonBox(width: double.infinity, height: 240)),
+          SizedBox(width: 12),
+          Expanded(child: SkeletonBox(width: double.infinity, height: 240)),
+        ],
+      ),
+    ],
+  );
 }

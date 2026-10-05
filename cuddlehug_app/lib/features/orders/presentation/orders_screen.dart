@@ -27,55 +27,51 @@ class OrdersScreen extends ConsumerWidget {
       body: state.loading && state.items.isEmpty
           ? const _OrdersSkeleton()
           : state.error != null && state.items.isEmpty
-              ? ErrorView(
-                  error: state.error,
-                  onRetry: () =>
-                      unawaited(ref.read(ordersProvider.notifier).load()),
-                )
-              : state.isEmpty
-                  ? EmptyState(
-                      icon: Icons.receipt_long_outlined,
-                      title: 'No orders yet',
-                      message:
-                          'Your cuddly companions will show up here once you order.',
-                      actionLabel: 'Start shopping',
-                      onAction: () => context.go(RoutePaths.shop),
-                    )
-                  : NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification.depth == 0 &&
-                            notification.metrics.pixels >=
-                                notification.metrics.maxScrollExtent - 300) {
-                          unawaited(
-                            ref.read(ordersProvider.notifier).loadMore(),
-                          );
-                        }
-                        return false;
-                      },
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        itemCount: state.items.length + (state.hasMore ? 1 : 0),
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: AppSpacing.md),
-                        itemBuilder: (context, index) {
-                          if (index >= state.items.length) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(AppSpacing.lg),
-                                child: SizedBox(
-                                  width: 22,
-                                  height: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.5,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          return _OrderCard(order: state.items[index]);
-                        },
+          ? ErrorView(
+              error: state.error,
+              onRetry: () =>
+                  unawaited(ref.read(ordersProvider.notifier).load()),
+            )
+          : state.isEmpty
+          ? EmptyState(
+              icon: Icons.receipt_long_outlined,
+              title: 'No orders yet',
+              message:
+                  'Your cuddly companions will show up here once you order.',
+              actionLabel: 'Start shopping',
+              onAction: () => context.go(RoutePaths.shop),
+            )
+          : NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification.depth == 0 &&
+                    notification.metrics.pixels >=
+                        notification.metrics.maxScrollExtent - 300) {
+                  unawaited(ref.read(ordersProvider.notifier).loadMore());
+                }
+                return false;
+              },
+              child: ListView.separated(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                itemCount: state.items.length + (state.hasMore ? 1 : 0),
+                separatorBuilder: (_, _) =>
+                    const SizedBox(height: AppSpacing.md),
+                itemBuilder: (context, index) {
+                  if (index >= state.items.length) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(AppSpacing.lg),
+                        child: SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(strokeWidth: 2.5),
+                        ),
                       ),
-                    ),
+                    );
+                  }
+                  return _OrderCard(order: state.items[index]);
+                },
+              ),
+            ),
     );
   }
 }
@@ -190,13 +186,13 @@ class _OrdersSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        children: [
-          for (var i = 0; i < 5; i++)
-            const Padding(
-              padding: EdgeInsets.only(bottom: AppSpacing.md),
-              child: SkeletonBox(width: double.infinity, height: 120),
-            ),
-        ],
-      );
+    padding: const EdgeInsets.all(AppSpacing.lg),
+    children: [
+      for (var i = 0; i < 5; i++)
+        const Padding(
+          padding: EdgeInsets.only(bottom: AppSpacing.md),
+          child: SkeletonBox(width: double.infinity, height: 120),
+        ),
+    ],
+  );
 }

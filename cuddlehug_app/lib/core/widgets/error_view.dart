@@ -25,42 +25,42 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.cloud_off_rounded,
-                size: 56,
-                color: AppColors.mutedForeground,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _message,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.mutedForeground,
-                  height: 1.4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              if (onRetry != null) ...[
-                const SizedBox(height: 24),
-                AppButton(label: 'Try again', onPressed: onRetry),
-              ],
-            ],
+    child: Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.cloud_off_rounded,
+            size: 56,
+            color: AppColors.mutedForeground,
           ),
-        ),
-      );
+          const SizedBox(height: 16),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.foreground,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _message,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.mutedForeground,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          if (onRetry != null) ...[
+            const SizedBox(height: 24),
+            AppButton(label: 'Try again', onPressed: onRetry),
+          ],
+        ],
+      ),
+    ),
+  );
 }

@@ -53,7 +53,8 @@ class ApiEnvelope<T> {
     required int status,
   }) {
     final data = unwrap(body, map, status: status);
-    final meta = body is Map<String, dynamic> && body['meta'] is Map<String, dynamic>
+    final meta =
+        body is Map<String, dynamic> && body['meta'] is Map<String, dynamic>
         ? body['meta'] as Map<String, dynamic>
         : null;
     return (data, meta);

@@ -20,11 +20,13 @@ class OrderRepository {
     final result = await _client.get<List<Order>>(
       ApiEndpoints.orders,
       query: {'page': page, 'limit': limit},
-      decode: (json) => ((json! as Map<String, dynamic>)['items']
-                  as List<dynamic>? ??
-              const <dynamic>[])
-          .map<Order>((item) => Order.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      decode: (json) =>
+          ((json! as Map<String, dynamic>)['items'] as List<dynamic>? ??
+                  const <dynamic>[])
+              .map<Order>(
+                (item) => Order.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
     return Paged(
       items: result.data,

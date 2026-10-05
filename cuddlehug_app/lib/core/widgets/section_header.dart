@@ -24,22 +24,22 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: padding,
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
-                ),
-              ),
+    padding: padding,
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.foreground,
             ),
-            if (actionLabel != null && onAction != null)
-              TextButton(onPressed: onAction, child: Text(actionLabel!)),
-          ],
+          ),
         ),
-      );
+        if (actionLabel != null && onAction != null)
+          TextButton(onPressed: onAction, child: Text(actionLabel!)),
+      ],
+    ),
+  );
 }

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 /// Standard labelled text field with label + optional obscure toggle.
 class AppTextField extends StatefulWidget {
   const new({
-    required this.label, super.key,
+    required this.label,
+    super.key,
     this.controller,
     this.hint,
     this.keyboardType,
@@ -45,43 +46,45 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          TextFormField(
-            controller: widget.controller,
-            initialValue: widget.initialValue,
-            enabled: widget.enabled,
-            keyboardType: widget.keyboardType,
-            textInputAction: widget.textInputAction,
-            validator: widget.validator,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            autocorrect: widget.autocorrect,
-            enableSuggestions: widget.enableSuggestions,
-            autofillHints: widget.autofillHints,
-            maxLines: widget.maxLines,
-            obscureText: _obscured,
-            decoration: InputDecoration(
-              hintText: widget.hint,
-              suffixIcon: widget.obscureText
-                  ? IconButton(
-                      icon: Icon(
-                        _obscured ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                        color: AppColors.mutedForeground,
-                      ),
-                      onPressed: () => setState(() => _obscured = !_obscured),
-                    )
-                  : null,
-            ),
-          ),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        widget.label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: AppColors.foreground,
+        ),
+      ),
+      const SizedBox(height: AppSpacing.xs),
+      TextFormField(
+        controller: widget.controller,
+        initialValue: widget.initialValue,
+        enabled: widget.enabled,
+        keyboardType: widget.keyboardType,
+        textInputAction: widget.textInputAction,
+        validator: widget.validator,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        autocorrect: widget.autocorrect,
+        enableSuggestions: widget.enableSuggestions,
+        autofillHints: widget.autofillHints,
+        maxLines: widget.maxLines,
+        obscureText: _obscured,
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  icon: Icon(
+                    _obscured
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: AppColors.mutedForeground,
+                  ),
+                  onPressed: () => setState(() => _obscured = !_obscured),
+                )
+              : null,
+        ),
+      ),
+    ],
+  );
 }

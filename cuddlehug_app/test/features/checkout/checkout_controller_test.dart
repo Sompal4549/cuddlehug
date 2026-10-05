@@ -14,10 +14,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 DioClient _client() => DioClient(
-      authSession: AuthSession(),
-      secureStore: SecureStore(),
-      enableLogging: false,
-    );
+  authSession: AuthSession(),
+  secureStore: SecureStore(),
+  enableLogging: false,
+);
 
 const _address = Address(
   id: 'a1',
@@ -30,41 +30,43 @@ const _address = Address(
   isDefault: true,
 );
 
-Map<String, dynamic> _orderJson({String id = 'o1', String status = 'PENDING'}) =>
-    <String, dynamic>{
-      'id': id,
-      'orderNumber': 'CH-0001-000123',
-      'status': status,
-      'paymentStatus': status == 'PENDING' ? 'PENDING' : 'PAID',
-      'paymentMethod': 'RAZORPAY',
-      'subtotal': '600.00',
-      'discountAmount': '0.00',
-      'couponCode': null,
-      'shippingAmount': '0.00',
-      'taxAmount': '108.00',
-      'totalAmount': '708.00',
-      'currency': 'INR',
-      'shippingAddress': null,
-      'billingAddress': null,
-      'trackingNumber': null,
-      'courierName': null,
-      'estimatedDelivery': null,
-      'cancelReason': null,
-      'placedAt': '2026-01-01T10:00:00.000Z',
-      'paidAt': null,
-      'createdAt': '2026-01-01T10:00:00.000Z',
-      'updatedAt': '2026-01-01T10:00:00.000Z',
-      'user': <String, dynamic>{
-        'id': 'u1',
-        'firstName': 'Asha',
-        'lastName': 'Patel',
-        'email': 'asha@example.com',
-        'phone': null,
-      },
-      'payment': null,
-      'items': <Map<String, dynamic>>[],
-      'history': <Map<String, dynamic>>[],
-    };
+Map<String, dynamic> _orderJson({
+  String id = 'o1',
+  String status = 'PENDING',
+}) => <String, dynamic>{
+  'id': id,
+  'orderNumber': 'CH-0001-000123',
+  'status': status,
+  'paymentStatus': status == 'PENDING' ? 'PENDING' : 'PAID',
+  'paymentMethod': 'RAZORPAY',
+  'subtotal': '600.00',
+  'discountAmount': '0.00',
+  'couponCode': null,
+  'shippingAmount': '0.00',
+  'taxAmount': '108.00',
+  'totalAmount': '708.00',
+  'currency': 'INR',
+  'shippingAddress': null,
+  'billingAddress': null,
+  'trackingNumber': null,
+  'courierName': null,
+  'estimatedDelivery': null,
+  'cancelReason': null,
+  'placedAt': '2026-01-01T10:00:00.000Z',
+  'paidAt': null,
+  'createdAt': '2026-01-01T10:00:00.000Z',
+  'updatedAt': '2026-01-01T10:00:00.000Z',
+  'user': <String, dynamic>{
+    'id': 'u1',
+    'firstName': 'Asha',
+    'lastName': 'Patel',
+    'email': 'asha@example.com',
+    'phone': null,
+  },
+  'payment': null,
+  'items': <Map<String, dynamic>>[],
+  'history': <Map<String, dynamic>>[],
+};
 
 class _FakeCheckoutRepository extends CheckoutRepository {
   new() : super(_client());
@@ -97,7 +99,9 @@ class _FakeCheckoutRepository extends CheckoutRepository {
         status: 409,
       );
     }
-    return Order.fromJson(_orderJson(status: paymentMethod == 'COD' ? 'CONFIRMED' : 'PENDING'));
+    return Order.fromJson(
+      _orderJson(status: paymentMethod == 'COD' ? 'CONFIRMED' : 'PENDING'),
+    );
   }
 
   @override
@@ -157,53 +161,53 @@ class _FakeCartRepository extends CartRepository {
 
   @override
   Future<Cart> getCart() async => Cart.fromJson(const <String, dynamic>{
-        'id': 'cart1',
-        'itemCount': 2,
-        'items': <Map<String, dynamic>>[
-          <String, dynamic>{
-            'id': 'line1',
-            'variantId': 'v1',
-            'quantity': 2,
-            'maxQuantity': 10,
-            'inStock': true,
-            'available': 7,
-            'product': <String, dynamic>{
-              'id': 'p1',
-              'name': 'Giant Teddy Bear',
-              'slug': 'giant-teddy-bear',
-              'image': null,
-              'status': 'ACTIVE',
-            },
-            'variant': <String, dynamic>{
-              'id': 'v1',
-              'size': 'GIANT',
-              'color': 'BROWN',
-              'sku': 'TDY-GI-BRN',
-              'price': '300.00',
-              'mrp': '499.00',
-            },
-          },
-        ],
-        'coupon': <String, dynamic>{
-          'code': 'CUDDLE30',
-          'description': null,
-          'type': 'FIXED',
-          'value': '30.00',
-          'discount': '30.00',
+    'id': 'cart1',
+    'itemCount': 2,
+    'items': <Map<String, dynamic>>[
+      <String, dynamic>{
+        'id': 'line1',
+        'variantId': 'v1',
+        'quantity': 2,
+        'maxQuantity': 10,
+        'inStock': true,
+        'available': 7,
+        'product': <String, dynamic>{
+          'id': 'p1',
+          'name': 'Giant Teddy Bear',
+          'slug': 'giant-teddy-bear',
+          'image': null,
+          'status': 'ACTIVE',
         },
-        'summary': <String, dynamic>{
-          'subtotal': '600.00',
-          'mrpTotal': '998.00',
-          'productSavings': '398.00',
-          'couponDiscount': '30.00',
-          'discountedSubtotal': '570.00',
-          'shipping': '0.00',
-          'tax': '108.00',
-          'total': '678.00',
-          'freeShippingUnlocked': true,
-          'lines': <Map<String, dynamic>>[],
+        'variant': <String, dynamic>{
+          'id': 'v1',
+          'size': 'GIANT',
+          'color': 'BROWN',
+          'sku': 'TDY-GI-BRN',
+          'price': '300.00',
+          'mrp': '499.00',
         },
-      });
+      },
+    ],
+    'coupon': <String, dynamic>{
+      'code': 'CUDDLE30',
+      'description': null,
+      'type': 'FIXED',
+      'value': '30.00',
+      'discount': '30.00',
+    },
+    'summary': <String, dynamic>{
+      'subtotal': '600.00',
+      'mrpTotal': '998.00',
+      'productSavings': '398.00',
+      'couponDiscount': '30.00',
+      'discountedSubtotal': '570.00',
+      'shipping': '0.00',
+      'tax': '108.00',
+      'total': '678.00',
+      'freeShippingUnlocked': true,
+      'lines': <Map<String, dynamic>>[],
+    },
+  });
 }
 
 void main() {
@@ -221,8 +225,7 @@ void main() {
     addTearDown(container.dispose);
   });
 
-  CheckoutController controller() =>
-      container.read(checkoutProvider.notifier);
+  CheckoutController controller() => container.read(checkoutProvider.notifier);
   CheckoutState state() => container.read(checkoutProvider);
 
   Future<void> prime() async {
@@ -282,26 +285,25 @@ void main() {
       ),
     );
     expect(state().stage, CheckoutStage.failed);
-    expect(
-      (state().error! as ApiException).code,
-      'PAYMENT_SIGNATURE_INVALID',
-    );
+    expect((state().error! as ApiException).code, 'PAYMENT_SIGNATURE_INVALID');
   });
 
-  test('cancelled gateway keeps the order for retry (single createOrder)',
-      () async {
-    await prime();
-    await controller().placeOrder();
-    controller().cancelPayment();
-    expect(state().stage, CheckoutStage.failed);
-    expect(state().placedOrder, isNotNull);
-    expect((state().error! as ApiException).code, 'PAYMENT_CANCELLED');
+  test(
+    'cancelled gateway keeps the order for retry (single createOrder)',
+    () async {
+      await prime();
+      await controller().placeOrder();
+      controller().cancelPayment();
+      expect(state().stage, CheckoutStage.failed);
+      expect(state().placedOrder, isNotNull);
+      expect((state().error! as ApiException).code, 'PAYMENT_CANCELLED');
 
-    await controller().retryPayment();
-    expect(state().stage, CheckoutStage.awaitingGateway);
-    expect(repo.createCalls, 1, reason: 'no second order on retry');
-    expect(repo.intentCalls, 2);
-  });
+      await controller().retryPayment();
+      expect(state().stage, CheckoutStage.awaitingGateway);
+      expect(repo.createCalls, 1, reason: 'no second order on retry');
+      expect(repo.intentCalls, 2);
+    },
+  );
 
   test('dev mode completes through dev-complete', () async {
     repo.devMode = true;
@@ -316,19 +318,23 @@ void main() {
     container.read(checkoutProvider);
     await controller().placeOrder();
     expect(state().stage, CheckoutStage.failed);
-    expect((state().error! as ApiException).message,
-        'Select a delivery address');
+    expect(
+      (state().error! as ApiException).message,
+      'Select a delivery address',
+    );
     expect(repo.createCalls, 0);
   });
 
-  test('order-create failure surfaces OUT_OF_STOCK and clears nothing',
-      () async {
-    await prime();
-    repo.failCreate = true;
-    await controller().placeOrder();
-    expect(state().stage, CheckoutStage.failed);
-    expect((state().error! as ApiException).code, 'OUT_OF_STOCK');
-    expect(state().placedOrder, isNull);
-    expect(state().idempotencyKey, isNotNull, reason: 'reuse on retry');
-  });
+  test(
+    'order-create failure surfaces OUT_OF_STOCK and clears nothing',
+    () async {
+      await prime();
+      repo.failCreate = true;
+      await controller().placeOrder();
+      expect(state().stage, CheckoutStage.failed);
+      expect((state().error! as ApiException).code, 'OUT_OF_STOCK');
+      expect(state().placedOrder, isNull);
+      expect(state().idempotencyKey, isNotNull, reason: 'reuse on retry');
+    },
+  );
 }

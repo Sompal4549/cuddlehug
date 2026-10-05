@@ -10,28 +10,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 ProductCard _card(String id) => ProductCard(
-      id: id,
-      name: 'Product $id',
-      slug: 'product-$id',
-      sku: 'SKU-$id',
-      mrp: '100.00',
-      price: '80.00',
-      discountPercent: 20,
-      status: 'ACTIVE',
-      category: const CategoryRef(id: 'c1', name: 'Cat', slug: 'cat'),
-      images: const [],
-      createdAt: DateTime.utc(2026),
-    );
+  id: id,
+  name: 'Product $id',
+  slug: 'product-$id',
+  sku: 'SKU-$id',
+  mrp: '100.00',
+  price: '80.00',
+  discountPercent: 20,
+  status: 'ACTIVE',
+  category: const CategoryRef(id: 'c1', name: 'Cat', slug: 'cat'),
+  images: const [],
+  createdAt: DateTime.utc(2026),
+);
 
 class _FakeCatalogRepository extends CatalogRepository {
   new(this._pages)
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   /// page number → response.
   final Map<int, Paged<ProductCard>> _pages;
@@ -60,7 +60,8 @@ void main() {
   late _FakeCatalogRepository repo;
   late ProviderContainer container;
 
-  ProductListState stateOf(String scope) => container.read(productListProvider(scope));
+  ProductListState stateOf(String scope) =>
+      container.read(productListProvider(scope));
 
   setUp(() {
     repo = _FakeCatalogRepository({
@@ -92,20 +93,22 @@ void main() {
   ProductListController controllerOf(String scope) =>
       container.read(productListProvider(scope).notifier);
 
-  test('applyQuery loads page 1 with the exact query passed to the API',
-      () async {
-    final controller = controllerOf('shop');
-    await controller.applyQuery(
-      const ProductQuery(category: 'gifts', sort: ProductSort.newest),
-    );
-    final state = stateOf('shop');
-    expect(state.items.map((item) => item.id), ['a', 'b']);
-    expect(state.meta.total, 3);
-    expect(state.hasMore, isTrue);
-    expect(state.loading, isFalse);
-    expect(repo.queries.single.category, 'gifts');
-    expect(repo.queries.single.page, 1);
-  });
+  test(
+    'applyQuery loads page 1 with the exact query passed to the API',
+    () async {
+      final controller = controllerOf('shop');
+      await controller.applyQuery(
+        const ProductQuery(category: 'gifts', sort: ProductSort.newest),
+      );
+      final state = stateOf('shop');
+      expect(state.items.map((item) => item.id), ['a', 'b']);
+      expect(state.meta.total, 3);
+      expect(state.hasMore, isTrue);
+      expect(state.loading, isFalse);
+      expect(repo.queries.single.category, 'gifts');
+      expect(repo.queries.single.page, 1);
+    },
+  );
 
   test('identical query is not refetched unless forced', () async {
     final controller = controllerOf('shop');
@@ -129,8 +132,7 @@ void main() {
     expect(repo.queries, hasLength(2));
   });
 
-  test('errors surface as state and recover on the next forced load',
-      () async {
+  test('errors surface as state and recover on the next forced load', () async {
     final controller = controllerOf('shop');
     repo.thrown = Exception('offline');
     await controller.applyQuery(const ProductQuery());

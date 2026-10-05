@@ -35,8 +35,7 @@ class _FakeAuthRepository implements AuthRepository {
     required String email,
     required String password,
     String? phone,
-  }) async =>
-      _user;
+  }) async => _user;
 
   @override
   Future<User?> refreshSilently() async => null;
@@ -45,13 +44,21 @@ class _FakeAuthRepository implements AuthRepository {
   Future<void> logout() async {}
 
   @override
-  Future<Map<String, dynamic>> forgotPassword(String email) async => {'message': 'sent'};
+  Future<Map<String, dynamic>> forgotPassword(String email) async => {
+    'message': 'sent',
+  };
 
   @override
-  Future<void> resetPassword({required String token, required String password}) async {}
+  Future<void> resetPassword({
+    required String token,
+    required String password,
+  }) async {}
 }
 
-Future<AuthRepository> _openLoginScreen(WidgetTester tester, AuthRepository repository) async {
+Future<AuthRepository> _openLoginScreen(
+  WidgetTester tester,
+  AuthRepository repository,
+) async {
   tester.view.devicePixelRatio = 1.0;
   tester.view.physicalSize = const Size(400, 900);
   addTearDown(tester.view.reset);
@@ -70,7 +77,11 @@ Future<AuthRepository> _openLoginScreen(WidgetTester tester, AuthRepository repo
   return repository;
 }
 
-Future<void> _submitLogin(WidgetTester tester, {required String email, required String password}) async {
+Future<void> _submitLogin(
+  WidgetTester tester, {
+  required String email,
+  required String password,
+}) async {
   await tester.enterText(find.byType(TextFormField).at(0), email);
   await tester.enterText(find.byType(TextFormField).at(1), password);
   await tester.tap(find.widgetWithText(ElevatedButton, 'Sign in'));
@@ -85,7 +96,9 @@ void main() {
     expect(find.text('Password is required'), findsOneWidget);
   });
 
-  testWidgets('successful login lands on the guarded destination', (tester) async {
+  testWidgets('successful login lands on the guarded destination', (
+    tester,
+  ) async {
     final repository = await _openLoginScreen(tester, _FakeAuthRepository());
     await _submitLogin(tester, email: 'ada@example.com', password: 'secret12');
     expect((repository as _FakeAuthRepository).lastEmail, 'ada@example.com');
@@ -95,7 +108,9 @@ void main() {
     expect(find.text('Sign in'), findsNothing);
   });
 
-  testWidgets('server-side auth failure shows the error banner', (tester) async {
+  testWidgets('server-side auth failure shows the error banner', (
+    tester,
+  ) async {
     await _openLoginScreen(
       tester,
       _FakeAuthRepository(

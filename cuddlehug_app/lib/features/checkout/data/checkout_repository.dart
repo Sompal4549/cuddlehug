@@ -1,6 +1,7 @@
 import 'package:cuddlehug_app/app_providers.dart';
 import 'package:cuddlehug_app/core/network/api_endpoints.dart';
-import 'package:cuddlehug_app/core/network/api_exception.dart' show ApiException;
+import 'package:cuddlehug_app/core/network/api_exception.dart'
+    show ApiException;
 import 'package:cuddlehug_app/core/network/dio_client.dart';
 import 'package:cuddlehug_app/features/checkout/data/models/payment_intent.dart';
 import 'package:cuddlehug_app/features/orders/data/models/order.dart';
@@ -72,7 +73,8 @@ class CheckoutRepository {
     final result = await _client.get<PaymentStatusInfo>(
       ApiEndpoints.paymentsStatus,
       query: <String, Object?>{'orderId': orderId},
-      decode: (json) => PaymentStatusInfo.fromJson(json! as Map<String, dynamic>),
+      decode: (json) =>
+          PaymentStatusInfo.fromJson(json! as Map<String, dynamic>),
     );
     return result.data;
   }

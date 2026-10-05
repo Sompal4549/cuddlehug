@@ -32,10 +32,7 @@ class CategoriesScreen extends ConsumerWidget {
               children: [
                 const Text(
                   'Could not load categories',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 12),
                 ElevatedButton(
@@ -129,9 +126,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(
-        ref.read(productListProvider(_scope).notifier).applyQuery(
-          ProductQuery(category: widget.slug),
-        ),
+        ref
+            .read(productListProvider(_scope).notifier)
+            .applyQuery(ProductQuery(category: widget.slug)),
       );
     });
   }
@@ -143,21 +140,24 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
       appBar: AppBar(title: Text(category.value?.name ?? 'Category')),
       body: Column(
         children: [
-          if (category.value?.description != null) Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.sm,
-                    AppSpacing.lg,
-                    AppSpacing.sm,
-                  ),
-                  child: Text(
-                    category.value!.description!,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.mutedForeground,
-                    ),
-                  ),
-                ) else const SizedBox.shrink(),
+          if (category.value?.description != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
+              child: Text(
+                category.value!.description!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.mutedForeground,
+                ),
+              ),
+            )
+          else
+            const SizedBox.shrink(),
           Expanded(child: ProductListBody(scope: _scope)),
         ],
       ),

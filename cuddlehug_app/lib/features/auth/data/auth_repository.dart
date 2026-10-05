@@ -95,8 +95,8 @@ class DioAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<User?> refreshSilently() =>
-      _refreshInflight ??= _doRefresh().whenComplete(() => _refreshInflight = null);
+  Future<User?> refreshSilently() => _refreshInflight ??= _doRefresh()
+      .whenComplete(() => _refreshInflight = null);
 
   Future<User?> _doRefresh() async {
     final token = _store.refreshToken;
@@ -109,7 +109,9 @@ class DioAuthRepository implements AuthRepository {
       );
       return await _establish(response);
     } on ApiException catch (error) {
-      if (error.isUnauthorized || error.status == 403 || error.code == 'INVALID_TOKEN') {
+      if (error.isUnauthorized ||
+          error.status == 403 ||
+          error.code == 'INVALID_TOKEN') {
         // Revoked/expired refresh token — clear local session material.
         await _store.clearRefreshToken();
         await _prefs.clearUserSnapshot();
@@ -151,7 +153,10 @@ class DioAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> resetPassword({required String token, required String password}) async {
+  Future<void> resetPassword({
+    required String token,
+    required String password,
+  }) async {
     await _dio.post<Object?>(
       ApiEndpoints.resetPassword,
       body: {'token': token, 'password': password},
@@ -194,6 +199,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   );
   // The 401-refresh hook is injected here instead of in `dioClientProvider`
   // so the two providers don't form a type-inference cycle.
-  dio.sessionRefresher = () async => (await repository.refreshSilently()) != null;
+  dio.sessionRefresher = () async =>
+      (await repository.refreshSilently()) != null;
   return repository;
 });

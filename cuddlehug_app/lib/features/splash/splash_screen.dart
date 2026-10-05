@@ -28,28 +28,32 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (elapsed < 400) {
       await Future<void>.delayed(Duration(milliseconds: 400 - elapsed));
     }
-    if (mounted) context.go(RoutePaths.home);
+    if (!mounted) return;
+    // A push / OS deep link may already have navigated somewhere more
+    // specific while we were restoring the session — never clobber it.
+    if (GoRouterState.of(context).matchedLocation != RoutePaths.splash) return;
+    context.go(RoutePaths.home);
   }
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-        backgroundColor: AppColors.background,
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'CuddleHug',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.foreground,
-                ),
-              ),
-              SizedBox(height: 24),
-              CircularProgressIndicator(),
-            ],
+    backgroundColor: AppColors.background,
+    body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'CuddleHug',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w800,
+              color: AppColors.foreground,
+            ),
           ),
-        ),
-      );
+          SizedBox(height: 24),
+          CircularProgressIndicator(),
+        ],
+      ),
+    ),
+  );
 }

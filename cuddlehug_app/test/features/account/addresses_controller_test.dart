@@ -15,32 +15,31 @@ Map<String, dynamic> _addressJson({
   String label = 'Home',
   bool isDefault = false,
   String line1 = '12 Cuddle Lane',
-}) =>
-    <String, dynamic>{
-      'id': id,
-      'userId': 'u1',
-      'label': label,
-      'fullName': 'Asha Patel',
-      'phone': '9876543210',
-      'line1': line1,
-      'line2': null,
-      'city': 'Pune',
-      'state': 'Maharashtra',
-      'pincode': '411001',
-      'country': 'India',
-      'isDefault': isDefault,
-      'updatedAt': '2026-01-01T10:00:00.000Z',
-    };
+}) => <String, dynamic>{
+  'id': id,
+  'userId': 'u1',
+  'label': label,
+  'fullName': 'Asha Patel',
+  'phone': '9876543210',
+  'line1': line1,
+  'line2': null,
+  'city': 'Pune',
+  'state': 'Maharashtra',
+  'pincode': '411001',
+  'country': 'India',
+  'isDefault': isDefault,
+  'updatedAt': '2026-01-01T10:00:00.000Z',
+};
 
 class _FakeAddressRepository extends AddressRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool failDelete = false;
   final List<Map<String, dynamic>> rows = [
@@ -91,14 +90,14 @@ class _FakeAddressRepository extends AddressRepository {
 class _AuthedAuth extends AuthController {
   @override
   AuthState build() => const AuthState.authenticated(
-        User(
-          id: 'u1',
-          email: 'asha@example.com',
-          firstName: 'Asha',
-          lastName: 'Patel',
-          role: 'CUSTOMER',
-        ),
-      );
+    User(
+      id: 'u1',
+      email: 'asha@example.com',
+      firstName: 'Asha',
+      lastName: 'Patel',
+      role: 'CUSTOMER',
+    ),
+  );
 }
 
 void main() {
@@ -109,7 +108,9 @@ void main() {
     repo = _FakeAddressRepository();
     container = ProviderContainer(
       overrides: [
-        authControllerProvider.overrideWith(_AuthedAuth.new),addressRepositoryProvider.overrideWithValue(repo)],
+        authControllerProvider.overrideWith(_AuthedAuth.new),
+        addressRepositoryProvider.overrideWithValue(repo),
+      ],
     );
     addTearDown(container.dispose);
   });
@@ -164,8 +165,9 @@ void main() {
     container.read(addressesProvider);
     await Future<void>.delayed(Duration.zero);
     await controller().setDefault('a2');
-    final defaults =
-        state().items.where((address) => address.isDefault).toList();
+    final defaults = state().items
+        .where((address) => address.isDefault)
+        .toList();
     expect(defaults, hasLength(1));
     expect(defaults.single.id, 'a2');
   });

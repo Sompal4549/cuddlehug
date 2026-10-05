@@ -31,7 +31,8 @@ class Money implements Comparable<Money> {
   int compareTo(Money other) => minorUnits.compareTo(other.minorUnits);
 
   @override
-  bool operator ==(Object other) => other is Money && other.minorUnits == minorUnits;
+  bool operator ==(Object other) =>
+      other is Money && other.minorUnits == minorUnits;
 
   @override
   int get hashCode => minorUnits.hashCode;

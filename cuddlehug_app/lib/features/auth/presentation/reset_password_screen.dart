@@ -19,7 +19,8 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
   final String token;
 
   @override
-  ConsumerState<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  ConsumerState<ResetPasswordScreen> createState() =>
+      _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
@@ -65,63 +66,74 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   }
 
   Widget _formView() => Form(
-        key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Choose a new password',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            if (_error != null) ...[
-              AuthErrorBanner(message: _error!),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            AppTextField(
-              label: 'New password',
-              controller: _password,
-              obscureText: true,
-              autofillHints: const [AutofillHints.newPassword],
-              validator: validateNewPassword,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            AppTextField(
-              label: 'Confirm password',
-              controller: _confirm,
-              obscureText: true,
-              textInputAction: TextInputAction.done,
-              validator: (value) {
-                if (value != _password.text) return 'Passwords do not match';
-                return null;
-              },
-              onFieldSubmitted: (_) => _submit(),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            AppButton(label: 'Update password', loading: _loading, onPressed: _submit),
-          ],
+    key: _formKey,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          'Choose a new password',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
         ),
-      );
+        const SizedBox(height: AppSpacing.lg),
+        if (_error != null) ...[
+          AuthErrorBanner(message: _error!),
+          const SizedBox(height: AppSpacing.md),
+        ],
+        AppTextField(
+          label: 'New password',
+          controller: _password,
+          obscureText: true,
+          autofillHints: const [AutofillHints.newPassword],
+          validator: validateNewPassword,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        AppTextField(
+          label: 'Confirm password',
+          controller: _confirm,
+          obscureText: true,
+          textInputAction: TextInputAction.done,
+          validator: (value) {
+            if (value != _password.text) return 'Passwords do not match';
+            return null;
+          },
+          onFieldSubmitted: (_) => _submit(),
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        AppButton(
+          label: 'Update password',
+          loading: _loading,
+          onPressed: _submit,
+        ),
+      ],
+    ),
+  );
 
   Widget _doneView() => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Icon(Icons.check_circle_outline, size: 56, color: AppColors.success),
-          const SizedBox(height: AppSpacing.md),
-          const Text(
-            'Password updated',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          const Text(
-            'For your security, all other sessions were signed out. Please sign in again.',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.mutedForeground),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton(label: 'Go to sign in', onPressed: () => context.go(RoutePaths.login)),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      const Icon(
+        Icons.check_circle_outline,
+        size: 56,
+        color: AppColors.success,
+      ),
+      const SizedBox(height: AppSpacing.md),
+      const Text(
+        'Password updated',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+      ),
+      const SizedBox(height: AppSpacing.sm),
+      const Text(
+        'For your security, all other sessions were signed out. Please sign in again.',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: AppColors.mutedForeground),
+      ),
+      const SizedBox(height: AppSpacing.lg),
+      AppButton(
+        label: 'Go to sign in',
+        onPressed: () => context.go(RoutePaths.login),
+      ),
+    ],
+  );
 }

@@ -20,12 +20,12 @@ class WishlistRepository {
     final result = await _client.get<List<WishlistItem>>(
       ApiEndpoints.wishlist,
       query: {'page': page, 'limit': limit},
-      decode: (json) => ((json! as Map<String, dynamic>)['items']!
-              as List<dynamic>)
-          .map<WishlistItem>(
-            (item) => WishlistItem.fromJson(item as Map<String, dynamic>),
-          )
-          .toList(),
+      decode: (json) =>
+          ((json! as Map<String, dynamic>)['items']! as List<dynamic>)
+              .map<WishlistItem>(
+                (item) => WishlistItem.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
     return Paged(
       items: result.data,

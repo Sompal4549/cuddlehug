@@ -40,9 +40,7 @@ class PrefsStore {
     final trimmed = term.trim();
     if (trimmed.isEmpty) return;
     final current = readRecentSearches()
-      ..removeWhere(
-        (entry) => entry.toLowerCase() == trimmed.toLowerCase(),
-      )
+      ..removeWhere((entry) => entry.toLowerCase() == trimmed.toLowerCase())
       ..insert(0, trimmed);
     await _prefs.setStringList(
       _recentSearchesKey,

@@ -13,10 +13,10 @@ class ApiException implements Exception {
 
   /// Server-synthesized for transport failures (plan §4.2 error taxonomy).
   factory network(Object cause) => ApiException(
-        message: 'Could not reach CuddleHug. Check your connection and try again.',
-        code: 'NETWORK_ERROR',
-        details: cause.toString(),
-      );
+    message: 'Could not reach CuddleHug. Check your connection and try again.',
+    code: 'NETWORK_ERROR',
+    details: cause.toString(),
+  );
 
   final String message;
   final String code;

@@ -76,34 +76,33 @@ class ProductQuery {
 
   /// Same filters with a different page — page 1 for a fresh load.
   ProductQuery atPage(int page) => ProductQuery(
-        search: search,
-        category: category,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        sizes: sizes,
-        colors: colors,
-        rating: rating,
-        availability: availability,
-        sort: sort,
-        page: page,
-        limit: limit,
-      );
+    search: search,
+    category: category,
+    minPrice: minPrice,
+    maxPrice: maxPrice,
+    sizes: sizes,
+    colors: colors,
+    rating: rating,
+    availability: availability,
+    sort: sort,
+    page: page,
+    limit: limit,
+  );
 
   /// Query params for the backend — DioClient drops nulls/empties.
   Map<String, dynamic> toMap() => {
-        if (search != null && search!.trim().isNotEmpty)
-          'search': search!.trim(),
-        if (category != null) 'category': category,
-        if (minPrice != null) 'minPrice': minPrice,
-        if (maxPrice != null) 'maxPrice': maxPrice,
-        if (sizes.isNotEmpty) 'size': sizes.join(','),
-        if (colors.isNotEmpty) 'color': colors.join(','),
-        if (rating != null) 'rating': rating,
-        if (availability != 'all') 'availability': availability,
-        'sort': sort.queryValue,
-        'page': page,
-        'limit': limit,
-      };
+    if (search != null && search!.trim().isNotEmpty) 'search': search!.trim(),
+    if (category != null) 'category': category,
+    if (minPrice != null) 'minPrice': minPrice,
+    if (maxPrice != null) 'maxPrice': maxPrice,
+    if (sizes.isNotEmpty) 'size': sizes.join(','),
+    if (colors.isNotEmpty) 'color': colors.join(','),
+    if (rating != null) 'rating': rating,
+    if (availability != 'all') 'availability': availability,
+    'sort': sort.queryValue,
+    'page': page,
+    'limit': limit,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -124,16 +123,16 @@ class ProductQuery {
 
   @override
   int get hashCode => Object.hash(
-        search,
-        category,
-        minPrice,
-        maxPrice,
-        availability,
-        rating,
-        sort,
-        page,
-        limit,
-        Object.hashAllUnordered(sizes),
-        Object.hashAllUnordered(colors),
-      );
+    search,
+    category,
+    minPrice,
+    maxPrice,
+    availability,
+    rating,
+    sort,
+    page,
+    limit,
+    Object.hashAllUnordered(sizes),
+    Object.hashAllUnordered(colors),
+  );
 }

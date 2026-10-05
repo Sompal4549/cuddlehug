@@ -31,7 +31,10 @@ void main() {
   test('reads exp from an access token payload', () {
     final exp = DateTime.utc(2026, 10, 2).millisecondsSinceEpoch ~/ 1000;
     final expiry = accessTokenExpiry(_jwtWithExp(exp));
-    expect(expiry, DateTime.fromMillisecondsSinceEpoch(exp * 1000, isUtc: true));
+    expect(
+      expiry,
+      DateTime.fromMillisecondsSinceEpoch(exp * 1000, isUtc: true),
+    );
   });
 
   test('returns null for malformed tokens', () {

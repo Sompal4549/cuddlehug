@@ -16,7 +16,10 @@ DateTime? accessTokenExpiry(String jwt) {
       return DateTime.fromMillisecondsSinceEpoch(exp * 1000, isUtc: true);
     }
     if (exp is num) {
-      return DateTime.fromMillisecondsSinceEpoch(exp.toInt() * 1000, isUtc: true);
+      return DateTime.fromMillisecondsSinceEpoch(
+        exp.toInt() * 1000,
+        isUtc: true,
+      );
     }
     return null;
   } on FormatException {

@@ -38,15 +38,15 @@ class ProductListBody extends ConsumerWidget {
           final columns = constraints.maxWidth < Breakpoints.compactMax
               ? 2
               : constraints.maxWidth < Breakpoints.expandedMin
-                  ? 3
-                  : 4;
+              ? 3
+              : 4;
           // Square image + fixed text block — derives the cell height from
           // the actual cell width so wide tablets never overflow.
           const spacing = 12.0;
           const padding = 2 * AppSpacing.lg;
           final cellWidth =
               (constraints.maxWidth - padding - spacing * (columns - 1)) /
-                  columns;
+              columns;
           final cellExtent = cellWidth + 110;
           if (state.initialLoading) return _skeletonGrid(columns, cellExtent);
           if (state.error != null && state.items.isEmpty) {
@@ -106,24 +106,24 @@ class ProductListBody extends ConsumerWidget {
   }
 
   Widget _skeletonGrid(int columns, double cellExtent) => GridView.builder(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columns,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          mainAxisExtent: cellExtent,
-        ),
-        itemCount: columns * 2,
-        itemBuilder: (context, _) => const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SkeletonBox(width: double.infinity, height: 150),
-            SizedBox(height: 10),
-            SkeletonBox(width: 140, height: 14),
-            SizedBox(height: 8),
-            SkeletonBox(width: 90, height: 14),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.all(AppSpacing.lg),
+    physics: const NeverScrollableScrollPhysics(),
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: columns,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      mainAxisExtent: cellExtent,
+    ),
+    itemCount: columns * 2,
+    itemBuilder: (context, _) => const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SkeletonBox(width: double.infinity, height: 150),
+        SizedBox(height: 10),
+        SkeletonBox(width: 140, height: 14),
+        SizedBox(height: 8),
+        SkeletonBox(width: 90, height: 14),
+      ],
+    ),
+  );
 }

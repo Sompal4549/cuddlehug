@@ -13,12 +13,14 @@ class AppNotification {
     required this.id,
     required this.type,
     required this.title,
-    required this.createdAt, this.body,
+    required this.createdAt,
+    this.body,
     this.data,
     this.read = false,
   });
 
-  factory fromJson(Map<String, dynamic> json) => _$AppNotificationFromJson(json);
+  factory fromJson(Map<String, dynamic> json) =>
+      _$AppNotificationFromJson(json);
 
   final String id;
   final String type;
@@ -33,11 +35,7 @@ class AppNotification {
 /// in `meta.unread` beside `data`.
 @immutable
 class NotificationPage {
-  const new({
-    required this.items,
-    required this.meta,
-    required this.unread,
-  });
+  const new({required this.items, required this.meta, required this.unread});
 
   final List<AppNotification> items;
   final PaginationMeta meta;

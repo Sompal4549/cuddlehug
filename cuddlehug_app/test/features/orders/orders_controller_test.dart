@@ -16,73 +16,72 @@ Map<String, dynamic> _orderJson({
   String number = 'CH-0001-000123',
   String status = 'DELIVERED',
   int page = 1,
-}) =>
-    <String, dynamic>{
-      'id': id,
-      'orderNumber': number,
-      'status': status,
-      'paymentStatus': 'PAID',
-      'paymentMethod': 'RAZORPAY',
-      'subtotal': '600.00',
-      'discountAmount': '0.00',
-      'couponCode': null,
-      'shippingAmount': '0.00',
-      'taxAmount': '108.00',
-      'totalAmount': '708.00',
-      'currency': 'INR',
-      'shippingAddress': null,
-      'billingAddress': null,
-      'trackingNumber': null,
-      'courierName': null,
-      'estimatedDelivery': null,
-      'cancelReason': null,
-      'placedAt': '2026-01-01T10:00:00.000Z',
-      'paidAt': '2026-01-01T10:00:05.000Z',
-      'createdAt': '2026-01-0${page > 1 ? 2 : 1}T10:00:00.000Z',
-      'updatedAt': '2026-01-01T10:00:00.000Z',
-      'user': <String, dynamic>{
-        'id': 'u1',
-        'firstName': 'Asha',
-        'lastName': 'Patel',
-        'email': 'asha@example.com',
-        'phone': null,
-      },
-      'payment': null,
-      'items': <Map<String, dynamic>>[
-        {
-          'id': 'oi1',
-          'productId': 'p1',
-          'variantId': 'v1',
-          'productName': 'Giant Teddy Bear',
-          'productSlug': 'giant-teddy-bear',
-          'variantLabel': 'GIANT / BROWN',
-          'sku': 'TDY-GI-BRN',
-          'imageUrl': null,
-          'unitPrice': '300.00',
-          'mrp': '499.00',
-          'quantity': 2,
-          'lineTotal': '600.00',
-        },
-      ],
-      'history': <Map<String, dynamic>>[
-        {
-          'id': 'h1',
-          'status': 'PENDING',
-          'note': 'Order placed',
-          'createdAt': '2026-01-01T10:00:00.000Z',
-        },
-      ],
-    };
+}) => <String, dynamic>{
+  'id': id,
+  'orderNumber': number,
+  'status': status,
+  'paymentStatus': 'PAID',
+  'paymentMethod': 'RAZORPAY',
+  'subtotal': '600.00',
+  'discountAmount': '0.00',
+  'couponCode': null,
+  'shippingAmount': '0.00',
+  'taxAmount': '108.00',
+  'totalAmount': '708.00',
+  'currency': 'INR',
+  'shippingAddress': null,
+  'billingAddress': null,
+  'trackingNumber': null,
+  'courierName': null,
+  'estimatedDelivery': null,
+  'cancelReason': null,
+  'placedAt': '2026-01-01T10:00:00.000Z',
+  'paidAt': '2026-01-01T10:00:05.000Z',
+  'createdAt': '2026-01-0${page > 1 ? 2 : 1}T10:00:00.000Z',
+  'updatedAt': '2026-01-01T10:00:00.000Z',
+  'user': <String, dynamic>{
+    'id': 'u1',
+    'firstName': 'Asha',
+    'lastName': 'Patel',
+    'email': 'asha@example.com',
+    'phone': null,
+  },
+  'payment': null,
+  'items': <Map<String, dynamic>>[
+    {
+      'id': 'oi1',
+      'productId': 'p1',
+      'variantId': 'v1',
+      'productName': 'Giant Teddy Bear',
+      'productSlug': 'giant-teddy-bear',
+      'variantLabel': 'GIANT / BROWN',
+      'sku': 'TDY-GI-BRN',
+      'imageUrl': null,
+      'unitPrice': '300.00',
+      'mrp': '499.00',
+      'quantity': 2,
+      'lineTotal': '600.00',
+    },
+  ],
+  'history': <Map<String, dynamic>>[
+    {
+      'id': 'h1',
+      'status': 'PENDING',
+      'note': 'Order placed',
+      'createdAt': '2026-01-01T10:00:00.000Z',
+    },
+  ],
+};
 
 class _FakeOrderRepository extends OrderRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   int listCalls = 0;
 
@@ -95,12 +94,7 @@ class _FakeOrderRepository extends OrderRepository {
     ];
     return Paged(
       items: items,
-      meta: PaginationMeta(
-        page: page,
-        limit: limit,
-        total: 5,
-        totalPages: 3,
-      ),
+      meta: PaginationMeta(page: page, limit: limit, total: 5, totalPages: 3),
     );
   }
 
@@ -108,28 +102,27 @@ class _FakeOrderRepository extends OrderRepository {
   Future<Order> getById(String id) async => Order.fromJson(_orderJson(id: id));
 
   @override
-  Future<OrderStats> stats() async => OrderStats.fromJson(
-        const <String, dynamic>{
-          'totalOrders': 5,
-          'pendingOrders': 1,
-          'deliveredOrders': 3,
-          'cancelledOrders': 1,
-          'totalSpend': '1500.00',
-        },
-      );
+  Future<OrderStats> stats() async =>
+      OrderStats.fromJson(const <String, dynamic>{
+        'totalOrders': 5,
+        'pendingOrders': 1,
+        'deliveredOrders': 3,
+        'cancelledOrders': 1,
+        'totalSpend': '1500.00',
+      });
 }
 
 class _AuthedAuth extends AuthController {
   @override
   AuthState build() => const AuthState.authenticated(
-        User(
-          id: 'u1',
-          email: 'asha@example.com',
-          firstName: 'Asha',
-          lastName: 'Patel',
-          role: 'CUSTOMER',
-        ),
-      );
+    User(
+      id: 'u1',
+      email: 'asha@example.com',
+      firstName: 'Asha',
+      lastName: 'Patel',
+      role: 'CUSTOMER',
+    ),
+  );
 }
 
 void main() {
@@ -140,7 +133,9 @@ void main() {
     repo = _FakeOrderRepository();
     container = ProviderContainer(
       overrides: [
-        authControllerProvider.overrideWith(_AuthedAuth.new),orderRepositoryProvider.overrideWithValue(repo)],
+        authControllerProvider.overrideWith(_AuthedAuth.new),
+        orderRepositoryProvider.overrideWithValue(repo),
+      ],
     );
     addTearDown(container.dispose);
   });
@@ -211,13 +206,13 @@ void main() {
 
 class _FailingOrders extends OrderRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   @override
   Future<Paged<Order>> list({int page = 1, int limit = 12}) async {

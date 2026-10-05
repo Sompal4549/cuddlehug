@@ -48,8 +48,10 @@ void main() {
 
   /// Zero backoff so the suite stays fast; the schedule itself is asserted
   /// by the budget (`delays.length` retries), not by wall-clock timing.
-  RetryInterceptor newRetry() =>
-      RetryInterceptor(client: dio, delays: const [Duration.zero, Duration.zero]);
+  RetryInterceptor newRetry() => RetryInterceptor(
+    client: dio,
+    delays: const [Duration.zero, Duration.zero],
+  );
 
   setUp(() {
     dio = Dio(
@@ -68,8 +70,8 @@ void main() {
     dio.interceptors.add(newRetry());
   }
 
-  test('GET retries a 5xx up to 2 times and returns the first success', () async {
-    useAdapter([500, 500, 200]);
+  test('GET retries a transient gateway failure up to 2 times', () async {
+    useAdapter([503, 503, 200]);
 
     final response = await dio.get<dynamic>('/content/home');
 
@@ -77,13 +79,54 @@ void main() {
     expect(adapter.calls, 3);
   });
 
-  test('GET stops after 2 retries and surfaces the final 5xx', () async {
-    useAdapter([500]);
+  test(
+    'GET stops after 2 retries and surfaces the final gateway error',
+    () async {
+      useAdapter([502]);
+
+      final response = await dio.get<dynamic>('/content/home');
+
+      expect(response.statusCode, 502);
+      expect(adapter.calls, 3);
+    },
+  );
+
+  test('GET retries 504 as well', () async {
+    useAdapter([504, 200]);
+
+    final response = await dio.get<dynamic>('/content/home');
+
+    expect(response.statusCode, 200);
+    expect(adapter.calls, 2);
+  });
+
+  test('GET does NOT retry a 500 (not a transient gateway failure)', () async {
+    useAdapter([500, 200]);
 
     final response = await dio.get<dynamic>('/content/home');
 
     expect(response.statusCode, 500);
-    expect(adapter.calls, 3);
+    expect(adapter.calls, 1);
+  });
+
+  test('GET does NOT retry non-retryable 4xx statuses', () async {
+    for (final status in [400, 401, 403, 404, 422]) {
+      useAdapter([status, 200]);
+
+      final response = await dio.get<dynamic>('/products');
+
+      expect(response.statusCode, status, reason: 'status $status');
+      expect(adapter.calls, 1, reason: 'status $status');
+    }
+  });
+
+  test('GET does NOT retry 429 (the UI owns backoff)', () async {
+    useAdapter([429, 200]);
+
+    final response = await dio.get<dynamic>('/products');
+
+    expect(response.statusCode, 429);
+    expect(adapter.calls, 1);
   });
 
   test('GET retries transient transport failures', () async {
@@ -95,29 +138,33 @@ void main() {
     expect(adapter.calls, 2);
   });
 
-  test('GET gives up when every attempt fails at the transport layer', () async {
-    useAdapter([const SocketException('no route')]);
+  test(
+    'GET gives up when every attempt fails at the transport layer',
+    () async {
+      useAdapter([const SocketException('no route')]);
 
-    await expectLater(
-      dio.get<dynamic>('/content/home'),
-      throwsA(
-        isA<DioException>().having(
-          (e) => e.type,
-          'type',
-          DioExceptionType.unknown,
+      await expectLater(
+        dio.get<dynamic>('/content/home'),
+        throwsA(
+          isA<DioException>().having(
+            (e) => e.type,
+            'type',
+            DioExceptionType.unknown,
+          ),
         ),
-      ),
-    );
-    expect(adapter.calls, 3);
-  });
+      );
+      expect(adapter.calls, 3);
+    },
+  );
 
   test('mutations are never auto-retried', () async {
-    useAdapter([500, 200]);
+    // A retryable status — only the method policy stops this.
+    useAdapter([503, 200]);
 
     final response = await dio.post<dynamic>('/cart/items', data: const {});
 
     // Exactly one attempt — a retried POST could double-submit an order.
-    expect(response.statusCode, 500);
+    expect(response.statusCode, 503);
     expect(adapter.calls, 1);
   });
 
@@ -129,6 +176,21 @@ void main() {
       throwsA(isA<DioException>()),
     );
     expect(adapter.calls, 1);
+  });
+
+  test('PUT / PATCH / DELETE are never auto-retried', () async {
+    for (final request in <Future<Response<dynamic>> Function()>[
+      () => dio.put<dynamic>('/addresses/1', data: const {}),
+      () => dio.patch<dynamic>('/profile', data: const {}),
+      () => dio.delete<dynamic>('/cart/items/1'),
+    ]) {
+      useAdapter([503, 200]);
+
+      final response = await request();
+
+      expect(response.statusCode, 503);
+      expect(adapter.calls, 1);
+    }
   });
 
   test('a 4xx is passed through untouched (no retry, no error)', () async {

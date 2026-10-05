@@ -12,7 +12,10 @@ class WishlistProduct {
     required this.id,
     required this.name,
     required this.slug,
-    required this.price, required this.mrp, required this.discountPercent, this.image,
+    required this.price,
+    required this.mrp,
+    required this.discountPercent,
+    this.image,
     this.ratingAverage = 0,
     this.ratingCount = 0,
     this.inStock = true,
@@ -44,8 +47,7 @@ class WishlistProduct {
 class WishlistItem {
   const new({required this.id, required this.createdAt, required this.product});
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$WishlistItemFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$WishlistItemFromJson(json);
 
   final String id;
   final DateTime createdAt;

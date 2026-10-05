@@ -35,14 +35,13 @@ class OrdersState {
     bool? loadingMore,
     Object? error,
     bool clearError = false,
-  }) =>
-      OrdersState(
-        items: items ?? this.items,
-        meta: meta ?? this.meta,
-        loading: loading ?? this.loading,
-        loadingMore: loadingMore ?? this.loadingMore,
-        error: clearError ? null : error ?? this.error,
-      );
+  }) => OrdersState(
+    items: items ?? this.items,
+    meta: meta ?? this.meta,
+    loading: loading ?? this.loading,
+    loadingMore: loadingMore ?? this.loadingMore,
+    error: clearError ? null : error ?? this.error,
+  );
 }
 
 class OrdersController extends Notifier<OrdersState> {
@@ -87,17 +86,18 @@ class OrdersController extends Notifier<OrdersState> {
   OrderRepository get _repo => ref.read(orderRepositoryProvider);
 }
 
-final ordersProvider =
-    NotifierProvider<OrdersController, OrdersState>(OrdersController.new);
+final ordersProvider = NotifierProvider<OrdersController, OrdersState>(
+  OrdersController.new,
+);
 
 /// Single order detail (family keyed by order id).
 final FutureProviderFamily<Order, String> orderDetailProvider =
     FutureProvider.family<Order, String>(
-  (ref, id) => ref.watch(orderRepositoryProvider).getById(id),
-);
+      (ref, id) => ref.watch(orderRepositoryProvider).getById(id),
+    );
 
 /// Account order stats (`GET /api/orders/stats`).
 final FutureProvider<OrderStats> orderStatsProvider =
     FutureProvider<OrderStats>(
-  (ref) => ref.watch(orderRepositoryProvider).stats(),
-);
+      (ref) => ref.watch(orderRepositoryProvider).stats(),
+    );

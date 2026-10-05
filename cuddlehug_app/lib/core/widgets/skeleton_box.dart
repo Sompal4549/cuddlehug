@@ -35,14 +35,14 @@ class _SkeletonBoxState extends State<SkeletonBox>
 
   @override
   Widget build(BuildContext context) => FadeTransition(
-        opacity: Tween<double>(begin: 0.35, end: 0.85).animate(_controller),
-        child: Container(
-          width: widget.width,
-          height: widget.height,
-          decoration: BoxDecoration(
-            color: AppColors.muted,
-            borderRadius: BorderRadius.circular(widget.radius),
-          ),
-        ),
-      );
+    opacity: Tween<double>(begin: 0.35, end: 0.85).animate(_controller),
+    child: Container(
+      width: widget.width,
+      height: widget.height,
+      decoration: BoxDecoration(
+        color: AppColors.muted,
+        borderRadius: BorderRadius.circular(widget.radius),
+      ),
+    ),
+  );
 }

@@ -27,15 +27,18 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   AppNotification? _selected;
 
   static IconData _iconFor(String type) => switch (type) {
-        'ORDER_CONFIRMATION' => Icons.receipt_long_outlined,
-        'PAYMENT_CONFIRMATION' => Icons.payment_outlined,
-        'SHIPPING' => Icons.local_shipping_outlined,
-        'DELIVERY' => Icons.inventory_2_outlined,
-        'PASSWORD_RESET' => Icons.lock_outline,
-        _ => Icons.notifications_none_rounded,
-      };
+    'ORDER_CONFIRMATION' => Icons.receipt_long_outlined,
+    'PAYMENT_CONFIRMATION' => Icons.payment_outlined,
+    'SHIPPING' => Icons.local_shipping_outlined,
+    'DELIVERY' => Icons.inventory_2_outlined,
+    'PASSWORD_RESET' => Icons.lock_outline,
+    _ => Icons.notifications_none_rounded,
+  };
 
-  Future<void> _open(NotificationsController controller, AppNotification n) async {
+  Future<void> _open(
+    NotificationsController controller,
+    AppNotification n,
+  ) async {
     setState(() => _selected = n);
     if (!n.read) {
       try {
@@ -50,94 +53,87 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     NotificationsController controller,
     AppNotification item, {
     required bool selected,
-  }) =>
-      InkWell(
-        onTap: () => unawaited(_open(controller, item)),
-        child: Container(
-          color: selected
-              ? AppColors.accent
-              : item.read
-                  ? null
-                  : AppColors.cardMuted,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm + 2,
+  }) => InkWell(
+    onTap: () => unawaited(_open(controller, item)),
+    child: Container(
+      color: selected
+          ? AppColors.accent
+          : item.read
+          ? null
+          : AppColors.cardMuted,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm + 2,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 18,
+            backgroundColor: item.read ? AppColors.muted : AppColors.accent,
+            child: Icon(
+              _iconFor(item.type),
+              size: 18,
+              color: item.read ? AppColors.mutedForeground : AppColors.onAccent,
+            ),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundColor:
-                    item.read ? AppColors.muted : AppColors.accent,
-                child: Icon(
-                  _iconFor(item.type),
-                  size: 18,
-                  color: item.read
-                      ? AppColors.mutedForeground
-                      : AppColors.onAccent,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            item.title,
-                            style: TextStyle(
-                              fontWeight: item.read
-                                  ? FontWeight.w500
-                                  : FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        if (!item.read)
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                      ],
-                    ),
-                    if (item.body != null && item.body!.isNotEmpty) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        item.body!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.mutedForeground,
-                          fontSize: 13,
+                    Expanded(
+                      child: Text(
+                        item.title,
+                        style: TextStyle(
+                          fontWeight: item.read
+                              ? FontWeight.w500
+                              : FontWeight.w700,
                         ),
                       ),
-                    ],
-                    const SizedBox(height: 4),
-                    Text(
-                      formatDateTime(item.createdAt),
-                      style: const TextStyle(
-                        color: AppColors.mutedForeground,
-                        fontSize: 12,
-                      ),
                     ),
+                    if (!item.read)
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
                   ],
                 ),
-              ),
-            ],
+                if (item.body != null && item.body!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    item.body!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: AppColors.mutedForeground,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 4),
+                Text(
+                  formatDateTime(item.createdAt),
+                  style: const TextStyle(
+                    color: AppColors.mutedForeground,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 
-  Widget _list(
-    NotificationsState state,
-    NotificationsController controller,
-  ) =>
+  Widget _list(NotificationsState state, NotificationsController controller) =>
       NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           final metrics = notification.metrics;
@@ -164,11 +160,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               );
             }
             final item = state.items[index];
-            return _tile(
-              controller,
-              item,
-              selected: _selected?.id == item.id,
-            );
+            return _tile(controller, item, selected: _selected?.id == item.id);
           },
         ),
       );
@@ -193,8 +185,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               child: Icon(
                 _iconFor(item.type),
                 size: 22,
-                color:
-                    item.read ? AppColors.mutedForeground : AppColors.onAccent,
+                color: item.read
+                    ? AppColors.mutedForeground
+                    : AppColors.onAccent,
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -260,29 +253,22 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       body: state.loading && state.items.isEmpty
           ? const _ListSkeleton()
           : state.error != null && state.items.isEmpty
-                ? ErrorView(
-                    error: state.error,
-                    onRetry: controller.load,
-                  )
-              : state.items.isEmpty
-                  ? const EmptyState(
-                      icon: Icons.notifications_none_rounded,
-                      title: 'No notifications',
-                      message:
-                          'Order updates and delivery alerts will appear here.',
-                    )
-                  : expanded
-                      ? Row(
-                          children: [
-                            SizedBox(
-                              width: 360,
-                              child: _list(state, controller),
-                            ),
-                            const VerticalDivider(width: 1, thickness: 1),
-                            Expanded(child: _detail()),
-                          ],
-                        )
-                      : _list(state, controller),
+          ? ErrorView(error: state.error, onRetry: controller.load)
+          : state.items.isEmpty
+          ? const EmptyState(
+              icon: Icons.notifications_none_rounded,
+              title: 'No notifications',
+              message: 'Order updates and delivery alerts will appear here.',
+            )
+          : expanded
+          ? Row(
+              children: [
+                SizedBox(width: 360, child: _list(state, controller)),
+                const VerticalDivider(width: 1, thickness: 1),
+                Expanded(child: _detail()),
+              ],
+            )
+          : _list(state, controller),
     );
   }
 }
@@ -292,12 +278,10 @@ class _ListSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        itemCount: 8,
-        separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-        itemBuilder: (_, _) => const SkeletonBox(
-          height: 72,
-          width: double.infinity,
-        ),
-      );
+    padding: const EdgeInsets.all(AppSpacing.md),
+    itemCount: 8,
+    separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+    itemBuilder: (_, _) =>
+        const SkeletonBox(height: 72, width: double.infinity),
+  );
 }

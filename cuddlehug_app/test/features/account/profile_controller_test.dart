@@ -12,13 +12,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 class _FakeProfileRepository extends ProfileRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool failUpdate = false;
   bool failPassword = false;
@@ -33,11 +33,7 @@ class _FakeProfileRepository extends ProfileRepository {
       phone: '9876543210',
       emailVerified: true,
     ),
-    stats: ProfileStats(
-      orders: 3,
-      wishlist: 1,
-      unreadNotifications: 2,
-    ),
+    stats: ProfileStats(orders: 3, wishlist: 1, unreadNotifications: 2),
   );
 
   @override
@@ -90,14 +86,14 @@ class _FakeProfileRepository extends ProfileRepository {
 class _AuthedAuth extends AuthController {
   @override
   AuthState build() => const AuthState.authenticated(
-        User(
-          id: 'u1',
-          email: 'asha@example.com',
-          firstName: 'Asha',
-          lastName: 'Patel',
-          role: 'CUSTOMER',
-        ),
-      );
+    User(
+      id: 'u1',
+      email: 'asha@example.com',
+      firstName: 'Asha',
+      lastName: 'Patel',
+      role: 'CUSTOMER',
+    ),
+  );
 }
 
 void main() {
@@ -116,8 +112,7 @@ void main() {
   });
 
   ProfileState state() => container.read(profileProvider);
-  ProfileController controller() =>
-      container.read(profileProvider.notifier);
+  ProfileController controller() => container.read(profileProvider.notifier);
 
   test('loads the profile with counters on first read', () async {
     container.read(profileProvider);

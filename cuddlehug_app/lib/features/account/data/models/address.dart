@@ -10,7 +10,13 @@ part 'address.g.dart';
 class Address {
   const new({
     required this.id,
-    required this.fullName, required this.phone, required this.line1, required this.city, required this.state, required this.pincode, this.userId,
+    required this.fullName,
+    required this.phone,
+    required this.line1,
+    required this.city,
+    required this.state,
+    required this.pincode,
+    this.userId,
     this.label = 'Home',
     this.line2,
     this.country = 'India',
@@ -19,8 +25,7 @@ class Address {
     this.updatedAt,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
 
   final String? id;
   final String? userId;
@@ -50,7 +55,13 @@ class Address {
 @immutable
 class AddressInput {
   const new({
-    required this.fullName, required this.phone, required this.line1, required this.city, required this.state, required this.pincode, this.label = 'Home',
+    required this.fullName,
+    required this.phone,
+    required this.line1,
+    required this.city,
+    required this.state,
+    required this.pincode,
+    this.label = 'Home',
     this.line2,
     this.country = 'India',
     this.isDefault = false,
@@ -68,15 +79,15 @@ class AddressInput {
   final bool isDefault;
 
   Map<String, Object?> toJson() => {
-        'label': label,
-        'fullName': fullName,
-        'phone': phone,
-        'line1': line1,
-        'line2': line2,
-        'city': city,
-        'state': state,
-        'pincode': pincode,
-        'country': country,
-        'isDefault': isDefault,
-      };
+    'label': label,
+    'fullName': fullName,
+    'phone': phone,
+    'line1': line1,
+    'line2': line2,
+    'city': city,
+    'state': state,
+    'pincode': pincode,
+    'country': country,
+    'isDefault': isDefault,
+  };
 }

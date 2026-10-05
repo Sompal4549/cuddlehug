@@ -11,8 +11,7 @@ part 'home_content.g.dart';
 class HeroSlide {
   const new({required this.image, required this.alt});
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$HeroSlideFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$HeroSlideFromJson(json);
 
   final String image;
   final String alt;
@@ -31,8 +30,7 @@ class HomeContent {
     this.hero = const [],
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$HomeContentFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$HomeContentFromJson(json);
 
   /// Flat store settings with dotted keys (`store.name`, `shipping.fee`…).
   final Map<String, dynamic> settings;

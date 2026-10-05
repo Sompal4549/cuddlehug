@@ -16,7 +16,15 @@ class ProductDetail {
     required this.name,
     required this.slug,
     required this.sku,
-    required this.description, required this.mrp, required this.price, required this.discountPercent, required this.status, required this.category, required this.images, required this.createdAt, this.shortDescription,
+    required this.description,
+    required this.mrp,
+    required this.price,
+    required this.discountPercent,
+    required this.status,
+    required this.category,
+    required this.images,
+    required this.createdAt,
+    this.shortDescription,
     this.material,
     this.filling,
     this.weightGrams,
@@ -33,8 +41,7 @@ class ProductDetail {
     this.variants = const [],
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$ProductDetailFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ProductDetailFromJson(json);
 
   final String id;
   final String name;

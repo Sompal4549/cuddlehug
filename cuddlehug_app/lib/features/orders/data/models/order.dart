@@ -17,11 +17,14 @@ class OrderItem {
     required this.productSlug,
     required this.variantLabel,
     required this.sku,
-    required this.unitPrice, required this.mrp, required this.quantity, required this.lineTotal, this.imageUrl,
+    required this.unitPrice,
+    required this.mrp,
+    required this.quantity,
+    required this.lineTotal,
+    this.imageUrl,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$OrderItemFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
 
   final String id;
   final String productId;
@@ -46,7 +49,8 @@ class OrderHistoryEntry {
   const new({
     required this.id,
     required this.status,
-    required this.createdAt, this.note,
+    required this.createdAt,
+    this.note,
   });
 
   factory fromJson(Map<String, dynamic> json) =>
@@ -65,13 +69,14 @@ class OrderPayment {
   const new({
     required this.id,
     required this.provider,
-    required this.amount, required this.status, this.providerOrderId,
+    required this.amount,
+    required this.status,
+    this.providerOrderId,
     this.providerPaymentId,
     this.method,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$OrderPaymentFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$OrderPaymentFromJson(json);
 
   final String id;
   final String provider;
@@ -94,8 +99,7 @@ class OrderUser {
     this.phone,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$OrderUserFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$OrderUserFromJson(json);
 
   final String id;
   final String firstName;
@@ -116,7 +120,14 @@ class Order {
     required this.paymentMethod,
     required this.subtotal,
     required this.discountAmount,
-    required this.shippingAmount, required this.taxAmount, required this.totalAmount, required this.placedAt, required this.createdAt, required this.updatedAt, required this.user, this.couponCode,
+    required this.shippingAmount,
+    required this.taxAmount,
+    required this.totalAmount,
+    required this.placedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.user,
+    this.couponCode,
     this.currency = 'INR',
     this.shippingAddress,
     this.billingAddress,
@@ -182,8 +193,7 @@ class OrderStats {
     this.totalSpend = '0.00',
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$OrderStatsFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$OrderStatsFromJson(json);
 
   final int totalOrders;
   final int pendingOrders;

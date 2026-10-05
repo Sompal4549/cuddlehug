@@ -9,57 +9,57 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Map<String, dynamic> _cartJson({int quantity = 2}) => <String, dynamic>{
-      'id': 'cart1',
-      'itemCount': quantity,
-      'items': [
-        {
-          'id': 'line1',
-          'variantId': 'v1',
-          'quantity': quantity,
-          'maxQuantity': 10,
-          'inStock': true,
-          'available': 7,
-          'product': {
-            'id': 'p1',
-            'name': 'Giant Teddy Bear',
-            'slug': 'giant-teddy-bear',
-            'image': null,
-            'status': 'ACTIVE',
-          },
-          'variant': {
-            'id': 'v1',
-            'size': 'GIANT',
-            'color': 'BROWN',
-            'sku': 'TDY-GI-BRN',
-            'price': '300.00',
-            'mrp': '499.00',
-          },
-        },
-      ],
-      'coupon': null,
-      'summary': <String, dynamic>{
-        'subtotal': '${quantity * 300}.00',
-        'mrpTotal': '${quantity * 499}.00',
-        'productSavings': '${(499 - 300) * quantity}.00',
-        'couponDiscount': '0.00',
-        'discountedSubtotal': '${quantity * 300}.00',
-        'shipping': '0.00',
-        'tax': '0.00',
-        'total': '${quantity * 300}.00',
-        'freeShippingUnlocked': true,
-        'lines': <Map<String, dynamic>>[],
+  'id': 'cart1',
+  'itemCount': quantity,
+  'items': [
+    {
+      'id': 'line1',
+      'variantId': 'v1',
+      'quantity': quantity,
+      'maxQuantity': 10,
+      'inStock': true,
+      'available': 7,
+      'product': {
+        'id': 'p1',
+        'name': 'Giant Teddy Bear',
+        'slug': 'giant-teddy-bear',
+        'image': null,
+        'status': 'ACTIVE',
       },
-    };
+      'variant': {
+        'id': 'v1',
+        'size': 'GIANT',
+        'color': 'BROWN',
+        'sku': 'TDY-GI-BRN',
+        'price': '300.00',
+        'mrp': '499.00',
+      },
+    },
+  ],
+  'coupon': null,
+  'summary': <String, dynamic>{
+    'subtotal': '${quantity * 300}.00',
+    'mrpTotal': '${quantity * 499}.00',
+    'productSavings': '${(499 - 300) * quantity}.00',
+    'couponDiscount': '0.00',
+    'discountedSubtotal': '${quantity * 300}.00',
+    'shipping': '0.00',
+    'tax': '0.00',
+    'total': '${quantity * 300}.00',
+    'freeShippingUnlocked': true,
+    'lines': <Map<String, dynamic>>[],
+  },
+};
 
 class _FakeCartRepository extends CartRepository {
   new({this.startQuantity = 2})
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool empty = false;
   final int startQuantity;
@@ -124,9 +124,9 @@ class _FakeCartRepository extends CartRepository {
 }
 
 Future<Widget> _app(_FakeCartRepository repo) async => ProviderScope(
-      overrides: [cartRepositoryProvider.overrideWithValue(repo)],
-      child: const MaterialApp(home: CartScreen()),
-    );
+  overrides: [cartRepositoryProvider.overrideWithValue(repo)],
+  child: const MaterialApp(home: CartScreen()),
+);
 
 Future<void> _pumpLoaded(WidgetTester tester, _FakeCartRepository repo) async {
   await tester.pumpWidget(await _app(repo));
@@ -135,8 +135,9 @@ Future<void> _pumpLoaded(WidgetTester tester, _FakeCartRepository repo) async {
 }
 
 void main() {
-  testWidgets('shows the empty state when the cart has no items',
-      (tester) async {
+  testWidgets('shows the empty state when the cart has no items', (
+    tester,
+  ) async {
     final repo = _FakeCartRepository()..empty = true;
     await _pumpLoaded(tester, repo);
     expect(find.text('Your cart is empty'), findsOneWidget);

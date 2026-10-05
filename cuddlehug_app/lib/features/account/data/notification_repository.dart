@@ -21,13 +21,14 @@ class NotificationRepository {
       // `unread` is intentionally omitted — the backend's coerce.boolean
       // would turn any value (including "false") into true.
       query: <String, Object?>{'page': page, 'limit': limit},
-      decode: (json) => ((json! as Map<String, dynamic>)['items']
-                  as List<dynamic>? ??
-              const <dynamic>[])
-          .map<AppNotification>(
-            (item) => AppNotification.fromJson(item as Map<String, dynamic>),
-          )
-          .toList(),
+      decode: (json) =>
+          ((json! as Map<String, dynamic>)['items'] as List<dynamic>? ??
+                  const <dynamic>[])
+              .map<AppNotification>(
+                (item) =>
+                    AppNotification.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
     final metaJson = result.meta ?? const <String, dynamic>{};
     return NotificationPage(

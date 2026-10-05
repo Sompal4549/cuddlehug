@@ -31,9 +31,9 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(
-        ref.read(productListProvider(_scope).notifier).applyQuery(
-          const ProductQuery(),
-        ),
+        ref
+            .read(productListProvider(_scope).notifier)
+            .applyQuery(const ProductQuery()),
       );
     });
   }
@@ -85,8 +85,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               height: 48,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 children: [
                   for (final category in categories.value!)
                     Padding(
@@ -127,43 +126,43 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 Expanded(
                   child: PopupMenuButton<ProductSort>(
                     padding: EdgeInsets.zero,
-                  tooltip: 'Sort',
-                  onSelected: (sort) => ref
-                      .read(productListProvider(_scope).notifier)
-                      .applyQuery(
-                        ProductQuery(
-                          search: state.query.search,
-                          category: state.query.category,
-                          minPrice: state.query.minPrice,
-                          maxPrice: state.query.maxPrice,
-                          sizes: state.query.sizes,
-                          colors: state.query.colors,
-                          rating: state.query.rating,
-                          availability: state.query.availability,
-                          sort: sort,
+                    tooltip: 'Sort',
+                    onSelected: (sort) => ref
+                        .read(productListProvider(_scope).notifier)
+                        .applyQuery(
+                          ProductQuery(
+                            search: state.query.search,
+                            category: state.query.category,
+                            minPrice: state.query.minPrice,
+                            maxPrice: state.query.maxPrice,
+                            sizes: state.query.sizes,
+                            colors: state.query.colors,
+                            rating: state.query.rating,
+                            availability: state.query.availability,
+                            sort: sort,
+                          ),
+                          force: true,
                         ),
-                        force: true,
-                      ),
-                  itemBuilder: (context) => [
-                    for (final sort in ProductSort.values)
-                      PopupMenuItem(
-                        value: sort,
-                        child: Row(
-                          children: [
-                            if (sort == state.query.sort)
-                              const Icon(
-                                Icons.check_rounded,
-                                size: 18,
-                                color: AppColors.primary,
-                              )
-                            else
-                              const SizedBox(width: 18),
-                            const SizedBox(width: 8),
-                            Text(sort.label),
-                          ],
+                    itemBuilder: (context) => [
+                      for (final sort in ProductSort.values)
+                        PopupMenuItem(
+                          value: sort,
+                          child: Row(
+                            children: [
+                              if (sort == state.query.sort)
+                                const Icon(
+                                  Icons.check_rounded,
+                                  size: 18,
+                                  color: AppColors.primary,
+                                )
+                              else
+                                const SizedBox(width: 18),
+                              const SizedBox(width: 8),
+                              Text(sort.label),
+                            ],
+                          ),
                         ),
-                      ),
-                  ],
+                    ],
                     child: OutlinedButton.icon(
                       onPressed: () {},
                       icon: const Icon(Icons.swap_vert_rounded, size: 18),
@@ -190,14 +189,14 @@ extension on ProductQuery {
   /// Category chip selection: clears the category when tapping the active
   /// chip; other filters stay untouched.
   ProductQuery copyWithCategory(String? slug) => ProductQuery(
-        search: search,
-        category: slug == category ? null : slug,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        sizes: sizes,
-        colors: colors,
-        rating: rating,
-        availability: availability,
-        sort: sort,
-      );
+    search: search,
+    category: slug == category ? null : slug,
+    minPrice: minPrice,
+    maxPrice: maxPrice,
+    sizes: sizes,
+    colors: colors,
+    rating: rating,
+    availability: availability,
+    sort: sort,
+  );
 }

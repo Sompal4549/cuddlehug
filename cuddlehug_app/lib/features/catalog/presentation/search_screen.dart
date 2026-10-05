@@ -48,10 +48,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Future<void> _search(String term) async {
     _debounce?.cancel();
     setState(() => _submitted = term);
-    await ref.read(productListProvider(_scope).notifier).applyQuery(
-          ProductQuery(search: term),
-          force: true,
-        );
+    await ref
+        .read(productListProvider(_scope).notifier)
+        .applyQuery(ProductQuery(search: term), force: true);
     if (term.isNotEmpty) {
       await ref.read(prefsStoreProvider).addRecentSearch(term);
     }

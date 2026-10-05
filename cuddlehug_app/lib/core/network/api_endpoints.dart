@@ -21,7 +21,8 @@ abstract final class ApiEndpoints {
   static String relatedProducts(String slug) => '/api/products/$slug/related';
   static const categories = '/api/categories';
   static String categoryBySlug(String slug) => '/api/categories/$slug';
-  static String productReviews(String productId) => '/api/reviews/product/$productId';
+  static String productReviews(String productId) =>
+      '/api/reviews/product/$productId';
   static const reviewsMine = '/api/reviews/mine';
   static const reviews = '/api/reviews';
 
@@ -32,7 +33,8 @@ abstract final class ApiEndpoints {
 
   // Wishlist
   static const wishlist = '/api/wishlist';
-  static String wishlistCheck(String productId) => '/api/wishlist/$productId/check';
+  static String wishlistCheck(String productId) =>
+      '/api/wishlist/$productId/check';
 
   // Orders & checkout
   static const orders = '/api/orders';

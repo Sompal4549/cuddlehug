@@ -12,7 +12,10 @@ void main() {
 
     test('product pushes deep-link to the product screen', () {
       expect(
-        pushRouteFor(<String, String>{'type': 'GENERAL', 'productSlug': 'bear'}),
+        pushRouteFor(<String, String>{
+          'type': 'GENERAL',
+          'productSlug': 'bear',
+        }),
         '/product/bear',
       );
     });
@@ -36,10 +39,10 @@ void main() {
       final payload = Uri(
         queryParameters: <String, String>{'type': 'SHIPPING', 'orderId': 'o1'},
       ).query;
-      expect(
-        pushDataFromPayload(payload),
-        <String, String>{'type': 'SHIPPING', 'orderId': 'o1'},
-      );
+      expect(pushDataFromPayload(payload), <String, String>{
+        'type': 'SHIPPING',
+        'orderId': 'o1',
+      });
     });
 
     test('tolerates null, empty and malformed payloads', () {

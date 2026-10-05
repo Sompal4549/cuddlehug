@@ -1,36 +1,49 @@
+import 'package:cuddlehug_app/core/observability/app_logger.dart';
+import 'package:cuddlehug_app/core/security/log_sanitizer.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
-/// Debug-only request/response logging (plan §4.2). Never prints headers or
-/// bodies, so no secret can leak; registered only when
-/// `AppConfig.enableLogging` is true (off in production builds).
+/// Request/response logging for debug builds (plan §4.2).
+///
+/// Deliberately logs **method + sanitized URL + status only** — never
+/// headers, never bodies, never the `Cookie`/`Authorization` pair. The URL
+/// itself goes through [LogSanitizer] so a `?token=…` reset link can never
+/// end up in a log line.
+///
+/// Registered only when `AppConfig.enableLogging` is true (off in production
+/// builds); the actual `debugPrint` is additionally `assert`-wrapped so it
+/// disappears entirely from release binaries.
 class LoggingInterceptor extends Interceptor {
   const new();
 
+  static const AppLogger _logger = DebugAppLogger(scope: 'http');
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    assert(() {
-      debugPrint('→ ${options.method} ${options.uri}');
-      return true;
-    }(), 'request log');
+    _logger.debug(
+      '→ ${options.method} ${LogSanitizer.sanitizeUri(options.uri)}',
+    );
     handler.next(options);
   }
 
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
-    assert(() {
-      debugPrint('← ${response.statusCode} ${response.requestOptions.uri}');
-      return true;
-    }(), 'response log');
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
+    _logger.debug(
+      '← ${response.statusCode} '
+      '${LogSanitizer.sanitizeUri(response.requestOptions.uri)}',
+    );
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    assert(() {
-      debugPrint('← ERROR ${err.response?.statusCode} ${err.requestOptions.uri}: ${err.message}');
-      return true;
-    }(), 'error log');
+    _logger.debug(
+      '← ERROR ${err.response?.statusCode ?? err.type.name} '
+      '${LogSanitizer.sanitizeUri(err.requestOptions.uri)}',
+      fields: {'message': err.message},
+    );
     handler.next(err);
   }
 }

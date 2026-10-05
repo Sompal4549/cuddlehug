@@ -29,8 +29,8 @@ class RatingStars extends StatelessWidget {
         color: AppColors.warning,
       );
     });
-    final label = countText ??
-        (count != null && count! > 0 ? ' ($count)' : null);
+    final label =
+        countText ?? (count != null && count! > 0 ? ' ($count)' : null);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

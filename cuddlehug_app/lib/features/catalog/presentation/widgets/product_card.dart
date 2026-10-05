@@ -27,9 +27,7 @@ class ProductCardTile extends ConsumerWidget {
   Future<void> _toggleWishlist(BuildContext context, WidgetRef ref) async {
     final authenticated = ref.read(authControllerProvider).isAuthenticated;
     if (!authenticated) {
-      final next = Uri.encodeComponent(
-        RoutePaths.productDetail(product.slug),
-      );
+      final next = Uri.encodeComponent(RoutePaths.productDetail(product.slug));
       await context.push('${RoutePaths.login}?next=$next');
       return;
     }
@@ -42,7 +40,9 @@ class ProductCardTile extends ConsumerWidget {
         ..showSnackBar(
           SnackBar(
             content: Text(
-              wasAdded ? 'Added to your wishlist' : 'Removed from your wishlist',
+              wasAdded
+                  ? 'Added to your wishlist'
+                  : 'Removed from your wishlist',
             ),
           ),
         );
@@ -177,9 +177,9 @@ class ProductMiniCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => SizedBox(
-        width: width,
-        child: ProductCardTile(product: product, width: width),
-      );
+    width: width,
+    child: ProductCardTile(product: product, width: width),
+  );
 }
 
 class _Badge extends StatelessWidget {
@@ -190,18 +190,18 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+    ),
+  );
 }

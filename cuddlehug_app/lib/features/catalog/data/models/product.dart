@@ -10,8 +10,7 @@ part 'product.g.dart';
 class CategoryRef {
   const new({required this.id, required this.name, required this.slug});
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$CategoryRefFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CategoryRefFromJson(json);
 
   final String id;
   final String name;
@@ -24,8 +23,7 @@ class CategoryRef {
 class ProductImage {
   const new({required this.url, this.id, this.alt, this.isPrimary = false});
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$ProductImageFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ProductImageFromJson(json);
 
   final String? id;
   final String url;
@@ -49,8 +47,7 @@ class ProductVariant {
     this.lowStock = false,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$ProductVariantFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ProductVariantFromJson(json);
 
   final String id;
   final String size;
@@ -77,7 +74,14 @@ class ProductCard {
     required this.name,
     required this.slug,
     required this.sku,
-    required this.mrp, required this.price, required this.discountPercent, required this.status, required this.category, required this.images, required this.createdAt, this.shortDescription,
+    required this.mrp,
+    required this.price,
+    required this.discountPercent,
+    required this.status,
+    required this.category,
+    required this.images,
+    required this.createdAt,
+    this.shortDescription,
     this.image,
     this.ratingAverage = 0,
     this.ratingCount = 0,
@@ -92,8 +96,7 @@ class ProductCard {
     this.variants = const [],
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$ProductCardFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ProductCardFromJson(json);
 
   final String id;
   final String name;

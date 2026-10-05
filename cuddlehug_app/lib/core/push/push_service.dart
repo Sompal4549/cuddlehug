@@ -89,7 +89,8 @@ class FcmPushService implements PushService {
       );
       await _local
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.createNotificationChannel(_channel);
       _wireMessaging();
       _initialized = true;
@@ -119,10 +120,10 @@ class FcmPushService implements PushService {
   }
 
   PushEvent _toEvent(RemoteMessage message) => PushEvent(
-        title: message.notification?.title ?? 'CuddleHug',
-        body: message.notification?.body ?? '',
-        data: message.data.map((key, value) => MapEntry(key, '$value')),
-      );
+    title: message.notification?.title ?? 'CuddleHug',
+    body: message.notification?.body ?? '',
+    data: message.data.map((key, value) => MapEntry(key, '$value')),
+  );
 
   @override
   Future<String?> requestToken() async {
@@ -169,7 +170,9 @@ class FcmPushService implements PushService {
         ),
         iOS: const DarwinNotificationDetails(),
       ),
-      payload: event.data.isEmpty ? null : Uri(queryParameters: event.data).query,
+      payload: event.data.isEmpty
+          ? null
+          : Uri(queryParameters: event.data).query,
     );
   }
 }

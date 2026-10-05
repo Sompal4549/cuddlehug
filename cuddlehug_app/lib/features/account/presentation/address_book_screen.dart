@@ -81,8 +81,7 @@ class _Body extends ConsumerWidget {
   const new({required this.state, required this.onConfirmDelete});
 
   final AddressesState state;
-  final Future<void> Function(BuildContext, WidgetRef, Address)
-      onConfirmDelete;
+  final Future<void> Function(BuildContext, WidgetRef, Address) onConfirmDelete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,9 +100,7 @@ class _Body extends ConsumerWidget {
     if (state.error != null && state.items.isEmpty) {
       return ErrorView(
         error: state.error,
-        onRetry: () => unawaited(
-          ref.read(addressesProvider.notifier).load(),
-        ),
+        onRetry: () => unawaited(ref.read(addressesProvider.notifier).load()),
       );
     }
     if (state.isEmpty) {
@@ -142,8 +139,7 @@ class _AddressCard extends ConsumerWidget {
 
   final Address address;
   final bool busy;
-  final Future<void> Function(BuildContext, WidgetRef, Address)
-      onConfirmDelete;
+  final Future<void> Function(BuildContext, WidgetRef, Address) onConfirmDelete;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -242,9 +238,7 @@ class _AddressCard extends ConsumerWidget {
               onSelected: (action) async {
                 switch (action) {
                   case 'edit':
-                    await context.push(
-                      '${RoutePaths.addresses}/${address.id}',
-                    );
+                    await context.push('${RoutePaths.addresses}/${address.id}');
                   case 'default':
                     try {
                       await controller.setDefault(address.id!);

@@ -37,15 +37,14 @@ class ProductListState {
     bool? loadingMore,
     Object? error,
     bool clearError = false,
-  }) =>
-      ProductListState(
-        query: query ?? this.query,
-        items: items ?? this.items,
-        meta: meta ?? this.meta,
-        loading: loading ?? this.loading,
-        loadingMore: loadingMore ?? this.loadingMore,
-        error: clearError ? null : error ?? this.error,
-      );
+  }) => ProductListState(
+    query: query ?? this.query,
+    items: items ?? this.items,
+    meta: meta ?? this.meta,
+    loading: loading ?? this.loading,
+    loadingMore: loadingMore ?? this.loadingMore,
+    error: clearError ? null : error ?? this.error,
+  );
 }
 
 /// Family of product list loaders — one instance per screen scope
@@ -78,7 +77,11 @@ class ProductListController extends Notifier<ProductListState> {
     try {
       final paged = await _repo.listProducts(base);
       if (seq != _seq) return;
-      state = ProductListState(query: base, items: paged.items, meta: paged.meta);
+      state = ProductListState(
+        query: base,
+        items: paged.items,
+        meta: paged.meta,
+      );
     } on Object catch (error) {
       if (seq != _seq) return;
       state = ProductListState(query: base, error: error);
@@ -113,7 +116,8 @@ class ProductListController extends Notifier<ProductListState> {
 }
 
 /// `productListProvider('shop')`, `('category:<slug>')`, `('search')`…
-final NotifierProviderFamily<ProductListController, ProductListState, String> productListProvider =
+final NotifierProviderFamily<ProductListController, ProductListState, String>
+productListProvider =
     NotifierProvider.family<ProductListController, ProductListState, String>(
-  ProductListController.new,
-);
+      ProductListController.new,
+    );

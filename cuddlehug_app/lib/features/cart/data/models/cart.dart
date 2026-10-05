@@ -16,8 +16,7 @@ class CartProduct {
     this.status = 'ACTIVE',
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$CartProductFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CartProductFromJson(json);
 
   final String id;
   final String name;
@@ -39,8 +38,7 @@ class CartVariant {
     required this.mrp,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$CartVariantFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CartVariantFromJson(json);
 
   final String id;
   final String size;
@@ -70,8 +68,7 @@ class CartItem {
     required this.variant,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$CartItemFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
 
   final String id;
   final String variantId;
@@ -91,11 +88,13 @@ class CartItem {
 class AppliedCoupon {
   const new({
     required this.code,
-    required this.type, required this.value, required this.discount, this.description,
+    required this.type,
+    required this.value,
+    required this.discount,
+    this.description,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$AppliedCouponFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$AppliedCouponFromJson(json);
 
   final String code;
   final String? description;
@@ -120,8 +119,7 @@ class PriceLine {
     required this.savings,
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$PriceLineFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$PriceLineFromJson(json);
 
   final String variantId;
   final int quantity;
@@ -150,8 +148,7 @@ class CartSummary {
     this.lines = const [],
   });
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$CartSummaryFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CartSummaryFromJson(json);
 
   final String subtotal;
   final String mrpTotal;
@@ -179,7 +176,8 @@ class Cart {
   const new({
     required this.id,
     required this.itemCount,
-    required this.summary, this.items = const [],
+    required this.summary,
+    this.items = const [],
     this.coupon,
   });
 

@@ -106,28 +106,28 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          border: Border.all(color: AppColors.border),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+    padding: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: AppColors.card,
+      border: Border.all(color: AppColors.border),
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: AppColors.foreground,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: AppColors.foreground,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            ...children,
-          ],
-        ),
-      );
+        const SizedBox(height: AppSpacing.sm),
+        ...children,
+      ],
+    ),
+  );
 }
 
 class _StatusCard extends StatelessWidget {
@@ -183,10 +183,7 @@ class _StatusCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Reason: ${order.cancelReason}',
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.destructive,
-            ),
+            style: const TextStyle(fontSize: 13, color: AppColors.destructive),
           ),
         ],
         const SizedBox(height: AppSpacing.md),
@@ -208,11 +205,7 @@ class _StatusCard extends StatelessWidget {
                     ),
                   ),
                   if (index != order.history.length - 1)
-                    Container(
-                      width: 2,
-                      height: 34,
-                      color: AppColors.border,
-                    ),
+                    Container(width: 2, height: 34, color: AppColors.border),
                 ],
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -257,26 +250,23 @@ class _TrackingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Card(
-        title: 'Tracking',
-        children: [
-          if (order.courierName != null)
-            Text(
-              order.courierName!,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.foreground,
-              ),
-            ),
-          Text(
-            order.trackingNumber!,
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.mutedForeground,
-            ),
+    title: 'Tracking',
+    children: [
+      if (order.courierName != null)
+        Text(
+          order.courierName!,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppColors.foreground,
           ),
-        ],
-      );
+        ),
+      Text(
+        order.trackingNumber!,
+        style: const TextStyle(fontSize: 13, color: AppColors.mutedForeground),
+      ),
+    ],
+  );
 }
 
 class _ItemsCard extends StatelessWidget {
@@ -286,59 +276,59 @@ class _ItemsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Card(
-        title: 'Items',
-        children: [
-          for (final item in order.items)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-                    child: NetworkImageView(
-                      url: item.imageUrl,
-                      width: 52,
-                      height: 52,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.productName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.foreground,
-                          ),
-                        ),
-                        Text(
-                          '${item.variantLabel} · Qty ${item.quantity}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: AppColors.mutedForeground,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    formatMoney(item.lineTotalMoney),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.foreground,
-                    ),
-                  ),
-                ],
+    title: 'Items',
+    children: [
+      for (final item in order.items)
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                child: NetworkImageView(
+                  url: item.imageUrl,
+                  width: 52,
+                  height: 52,
+                ),
               ),
-            ),
-        ],
-      );
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.productName,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.foreground,
+                      ),
+                    ),
+                    Text(
+                      '${item.variantLabel} · Qty ${item.quantity}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.mutedForeground,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                formatMoney(item.lineTotalMoney),
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.foreground,
+                ),
+              ),
+            ],
+          ),
+        ),
+    ],
+  );
 }
 
 class _TotalsCard extends StatelessWidget {
@@ -348,37 +338,30 @@ class _TotalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Card(
-        title: 'Summary',
-        children: [
-          _row('Subtotal', formatMoney(order.subtotalMoney)),
-          if (!order.discountMoney.isZero)
-            _row(
-              'Discount${order.couponCode != null ? ' (${order.couponCode})' : ''}',
-              '- ${formatMoney(order.discountMoney)}',
-              color: AppColors.success,
-            ),
-          _row(
-            'Shipping',
-            order.shippingMoney.isZero
-                ? 'FREE'
-                : formatMoney(order.shippingMoney),
-            color: order.shippingMoney.isZero ? AppColors.success : null,
-          ),
-          _row('Tax', formatMoney(order.taxMoney)),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
-            child: Divider(height: 1),
-          ),
-          _row('Total', formatMoney(order.totalMoney), bold: true),
-        ],
-      );
+    title: 'Summary',
+    children: [
+      _row('Subtotal', formatMoney(order.subtotalMoney)),
+      if (!order.discountMoney.isZero)
+        _row(
+          'Discount${order.couponCode != null ? ' (${order.couponCode})' : ''}',
+          '- ${formatMoney(order.discountMoney)}',
+          color: AppColors.success,
+        ),
+      _row(
+        'Shipping',
+        order.shippingMoney.isZero ? 'FREE' : formatMoney(order.shippingMoney),
+        color: order.shippingMoney.isZero ? AppColors.success : null,
+      ),
+      _row('Tax', formatMoney(order.taxMoney)),
+      const Padding(
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+        child: Divider(height: 1),
+      ),
+      _row('Total', formatMoney(order.totalMoney), bold: true),
+    ],
+  );
 
-  Widget _row(
-    String label,
-    String value, {
-    Color? color,
-    bool bold = false,
-  }) =>
+  Widget _row(String label, String value, {Color? color, bool bold = false}) =>
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
@@ -389,7 +372,9 @@ class _TotalsCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: bold ? 15 : 13,
                   fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
-                  color: bold ? AppColors.foreground : AppColors.mutedForeground,
+                  color: bold
+                      ? AppColors.foreground
+                      : AppColors.mutedForeground,
                 ),
               ),
             ),
@@ -421,9 +406,7 @@ class _PaymentCard extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                order.paymentMethod == 'COD'
-                    ? 'Cash on delivery'
-                    : 'Razorpay',
+                order.paymentMethod == 'COD' ? 'Cash on delivery' : 'Razorpay',
                 style: const TextStyle(
                   fontSize: 13,
                   color: AppColors.foreground,
@@ -460,31 +443,28 @@ class _AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Card(
-        title: 'Delivery address',
-        children: [
-          Text(
-            '${address.label} · ${address.fullName}',
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
-            ),
-          ),
-          Text(
-            '${address.singleLine}, ${address.fullLabel}',
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.mutedForeground,
-              height: 1.4,
-            ),
-          ),
-          Text(
-            address.phone,
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.mutedForeground,
-            ),
-          ),
-        ],
-      );
+    title: 'Delivery address',
+    children: [
+      Text(
+        '${address.label} · ${address.fullName}',
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: AppColors.foreground,
+        ),
+      ),
+      Text(
+        '${address.singleLine}, ${address.fullLabel}',
+        style: const TextStyle(
+          fontSize: 13,
+          color: AppColors.mutedForeground,
+          height: 1.4,
+        ),
+      ),
+      Text(
+        address.phone,
+        style: const TextStyle(fontSize: 13, color: AppColors.mutedForeground),
+      ),
+    ],
+  );
 }

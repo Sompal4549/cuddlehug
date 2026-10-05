@@ -16,7 +16,10 @@ void main() {
 
     test('arithmetic stays in integer minor units', () {
       expect((Money.parse('0.10') + Money.parse('0.20')).minorUnits, 30);
-      expect((Money.parse('499.00') - Money.parse('99.00')).toString(), '400.00');
+      expect(
+        (Money.parse('499.00') - Money.parse('99.00')).toString(),
+        '400.00',
+      );
     });
   });
 

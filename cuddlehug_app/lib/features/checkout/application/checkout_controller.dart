@@ -81,18 +81,18 @@ class CheckoutState {
     bool clearCompleted = false,
     bool clearError = false,
     bool clearKey = false,
-  }) =>
-      CheckoutState(
-        address: clearAddress ? null : address ?? this.address,
-        method: method ?? this.method,
-        stage: stage ?? this.stage,
-        placedOrder: clearPlaced ? null : placedOrder ?? this.placedOrder,
-        pendingIntent: clearIntent ? null : pendingIntent ?? this.pendingIntent,
-        completedOrder:
-            clearCompleted ? null : completedOrder ?? this.completedOrder,
-        error: clearError ? null : error ?? this.error,
-        idempotencyKey: clearKey ? null : idempotencyKey ?? this.idempotencyKey,
-      );
+  }) => CheckoutState(
+    address: clearAddress ? null : address ?? this.address,
+    method: method ?? this.method,
+    stage: stage ?? this.stage,
+    placedOrder: clearPlaced ? null : placedOrder ?? this.placedOrder,
+    pendingIntent: clearIntent ? null : pendingIntent ?? this.pendingIntent,
+    completedOrder: clearCompleted
+        ? null
+        : completedOrder ?? this.completedOrder,
+    error: clearError ? null : error ?? this.error,
+    idempotencyKey: clearKey ? null : idempotencyKey ?? this.idempotencyKey,
+  );
 }
 
 /// Drives order placement and the payment handoff. The Razorpay sheet
@@ -143,7 +143,8 @@ class CheckoutController extends Notifier<CheckoutState> {
       );
       return;
     }
-    final key = state.idempotencyKey ??
+    final key =
+        state.idempotencyKey ??
         'ch-app-${DateTime.now().microsecondsSinceEpoch}-'
             '${_random.nextInt(0x7fffffff)}';
     state = state.copyWith(
@@ -251,7 +252,6 @@ class CheckoutController extends Notifier<CheckoutState> {
   CheckoutRepository get _repo => ref.read(checkoutRepositoryProvider);
 }
 
-final checkoutProvider =
-    NotifierProvider<CheckoutController, CheckoutState>(
+final checkoutProvider = NotifierProvider<CheckoutController, CheckoutState>(
   CheckoutController.new,
 );

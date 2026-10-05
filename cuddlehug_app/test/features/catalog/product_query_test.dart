@@ -5,10 +5,7 @@ void main() {
   group('ProductQuery.toMap', () {
     test('always sends sort/page/limit and drops empty filters', () {
       const query = ProductQuery();
-      expect(
-        query.toMap(),
-        {'sort': 'relevance', 'page': 1, 'limit': 12},
-      );
+      expect(query.toMap(), {'sort': 'relevance', 'page': 1, 'limit': 12});
     });
 
     test('serializes every backend filter with zod-expected names', () {

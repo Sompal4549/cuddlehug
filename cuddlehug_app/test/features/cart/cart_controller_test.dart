@@ -12,59 +12,58 @@ Map<String, dynamic> _cartJson({
   int itemCount = 2,
   int quantity = 2,
   Map<String, dynamic>? coupon,
-}) =>
-    <String, dynamic>{
-      'id': 'cart1',
-      'itemCount': itemCount,
-      'items': [
-        {
-          'id': 'line1',
-          'variantId': 'v1',
-          'quantity': quantity,
-          'maxQuantity': 10,
-          'inStock': true,
-          'available': 7,
-          'product': {
-            'id': 'p1',
-            'name': 'Giant Teddy Bear',
-            'slug': 'giant-teddy-bear',
-            'image': null,
-            'status': 'ACTIVE',
-          },
-          'variant': {
-            'id': 'v1',
-            'size': 'GIANT',
-            'color': 'BROWN',
-            'sku': 'TDY-GI-BRN',
-            'price': '300.00',
-            'mrp': '499.00',
-          },
-        },
-      ],
-      'coupon': coupon,
-      'summary': <String, dynamic>{
-        'subtotal': '${quantity * 300}.00',
-        'mrpTotal': '${quantity * 499}.00',
-        'productSavings': '${(499 - 300) * quantity}.00',
-        'couponDiscount': '0.00',
-        'discountedSubtotal': '${quantity * 300}.00',
-        'shipping': '0.00',
-        'tax': '0.00',
-        'total': '${quantity * 300}.00',
-        'freeShippingUnlocked': true,
-        'lines': <Map<String, dynamic>>[],
+}) => <String, dynamic>{
+  'id': 'cart1',
+  'itemCount': itemCount,
+  'items': [
+    {
+      'id': 'line1',
+      'variantId': 'v1',
+      'quantity': quantity,
+      'maxQuantity': 10,
+      'inStock': true,
+      'available': 7,
+      'product': {
+        'id': 'p1',
+        'name': 'Giant Teddy Bear',
+        'slug': 'giant-teddy-bear',
+        'image': null,
+        'status': 'ACTIVE',
       },
-    };
+      'variant': {
+        'id': 'v1',
+        'size': 'GIANT',
+        'color': 'BROWN',
+        'sku': 'TDY-GI-BRN',
+        'price': '300.00',
+        'mrp': '499.00',
+      },
+    },
+  ],
+  'coupon': coupon,
+  'summary': <String, dynamic>{
+    'subtotal': '${quantity * 300}.00',
+    'mrpTotal': '${quantity * 499}.00',
+    'productSavings': '${(499 - 300) * quantity}.00',
+    'couponDiscount': '0.00',
+    'discountedSubtotal': '${quantity * 300}.00',
+    'shipping': '0.00',
+    'tax': '0.00',
+    'total': '${quantity * 300}.00',
+    'freeShippingUnlocked': true,
+    'lines': <Map<String, dynamic>>[],
+  },
+};
 
 class _FakeCartRepository extends CartRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   bool failGet = false;
   bool failAdd = false;
@@ -196,19 +195,21 @@ void main() {
     expect(state().busyVariantIds, isEmpty);
   });
 
-  test('failed addItem rethrows, records the error and clears busy flags',
-      () async {
-    container.read(cartProvider);
-    await Future<void>.delayed(Duration.zero);
-    repo.failAdd = true;
-    await expectLater(
-      controller().addItem('v1'),
-      throwsA(isA<ApiException>()),
-    );
-    expect(state().busyVariantIds, isEmpty);
-    expect(state().error, isA<ApiException>());
-    expect(state().cart!.items.first.quantity, 2, reason: 'cart unchanged');
-  });
+  test(
+    'failed addItem rethrows, records the error and clears busy flags',
+    () async {
+      container.read(cartProvider);
+      await Future<void>.delayed(Duration.zero);
+      repo.failAdd = true;
+      await expectLater(
+        controller().addItem('v1'),
+        throwsA(isA<ApiException>()),
+      );
+      expect(state().busyVariantIds, isEmpty);
+      expect(state().error, isA<ApiException>());
+      expect(state().cart!.items.first.quantity, 2, reason: 'cart unchanged');
+    },
+  );
 
   test('updateQuantity ships the new quantity', () async {
     container.read(cartProvider);
@@ -243,8 +244,11 @@ void main() {
     await expectLater(
       controller().applyCoupon('NOPE'),
       throwsA(
-        isA<ApiException>()
-            .having((e) => e.message, 'message', 'This coupon code does not exist'),
+        isA<ApiException>().having(
+          (e) => e.message,
+          'message',
+          'This coupon code does not exist',
+        ),
       ),
     );
     expect(state().couponBusy, isFalse);

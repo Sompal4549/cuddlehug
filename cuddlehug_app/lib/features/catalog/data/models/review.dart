@@ -10,8 +10,7 @@ part 'review.g.dart';
 class ReviewUser {
   const new({required this.id, required this.name, this.avatarUrl});
 
-  factory fromJson(Map<String, dynamic> json) =>
-      _$ReviewUserFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ReviewUserFromJson(json);
 
   final String id;
   final String name;
@@ -25,7 +24,11 @@ class Review {
   const new({
     required this.id,
     required this.rating,
-    required this.comment, required this.status, required this.createdAt, required this.user, this.title,
+    required this.comment,
+    required this.status,
+    required this.createdAt,
+    required this.user,
+    this.title,
     this.imageUrl,
   });
 
@@ -52,17 +55,17 @@ class ReviewPage {
   });
 
   factory fromJson(Map<String, dynamic> json) => ReviewPage(
-        items: (json['items'] as List<dynamic>? ?? const [])
-            .map((item) => Review.fromJson(item as Map<String, dynamic>))
-            .toList(),
-        distribution: {
-          for (final entry
-              in (json['distribution'] as Map<String, dynamic>? ?? const {})
-                  .entries)
-            entry.key: (entry.value as num).toInt(),
-        },
-        meta: PaginationMeta.first,
-      );
+    items: (json['items'] as List<dynamic>? ?? const [])
+        .map((item) => Review.fromJson(item as Map<String, dynamic>))
+        .toList(),
+    distribution: {
+      for (final entry
+          in (json['distribution'] as Map<String, dynamic>? ?? const {})
+              .entries)
+        entry.key: (entry.value as num).toInt(),
+    },
+    meta: PaginationMeta.first,
+  );
 
   final List<Review> items;
   final Map<String, int> distribution;

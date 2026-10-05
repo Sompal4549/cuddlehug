@@ -58,13 +58,13 @@ class _FakePushService implements PushService {
 
 class _FakeDeviceRepository extends DeviceRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   final List<String> calls = [];
 
@@ -85,13 +85,13 @@ class _FakeDeviceRepository extends DeviceRepository {
 
 class _FakeNotificationRepository extends NotificationRepository {
   new()
-      : super(
-          DioClient(
-            authSession: AuthSession(),
-            secureStore: SecureStore(),
-            enableLogging: false,
-          ),
-        );
+    : super(
+        DioClient(
+          authSession: AuthSession(),
+          secureStore: SecureStore(),
+          enableLogging: false,
+        ),
+      );
 
   int unread = 5;
 
@@ -99,12 +99,7 @@ class _FakeNotificationRepository extends NotificationRepository {
   Future<NotificationPage> list({int page = 1, int limit = 12}) async =>
       NotificationPage(
         items: List<AppNotification>.empty(),
-        meta: PaginationMeta(
-          page: page,
-          limit: limit,
-          total: 0,
-          totalPages: 1,
-        ),
+        meta: PaginationMeta(page: page, limit: limit, total: 0, totalPages: 1),
         unread: unread,
       );
 
@@ -115,14 +110,14 @@ class _FakeNotificationRepository extends NotificationRepository {
 class _AuthedAuth extends AuthController {
   @override
   AuthState build() => const AuthState.authenticated(
-        User(
-          id: 'u1',
-          email: 'asha@example.com',
-          firstName: 'Asha',
-          lastName: 'Patel',
-          role: 'CUSTOMER',
-        ),
-      );
+    User(
+      id: 'u1',
+      email: 'asha@example.com',
+      firstName: 'Asha',
+      lastName: 'Patel',
+      role: 'CUSTOMER',
+    ),
+  );
 }
 
 class _GuestAuth extends AuthController {
@@ -165,10 +160,7 @@ void main() {
     final subject = bootstrap();
     await subject.onAuthChanged('u1');
     await subject.onAuthChanged(null);
-    expect(devices.calls, [
-      'register:tok-1:ANDROID',
-      'unregister:tok-1',
-    ]);
+    expect(devices.calls, ['register:tok-1:ANDROID', 'unregister:tok-1']);
   });
 
   test('push unavailable registers nothing (poll fallback path)', () async {
@@ -187,8 +179,7 @@ void main() {
     expect(devices.calls, contains('register:tok-2:ANDROID'));
   });
 
-  test('bootstrap handles the launch-from-tray message exactly once',
-      () async {
+  test('bootstrap handles the launch-from-tray message exactly once', () async {
     push.initial = const PushEvent(
       title: 'Order shipped',
       body: 'Your bears are on the way',
